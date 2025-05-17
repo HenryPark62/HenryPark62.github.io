@@ -1,20 +1,72 @@
 body {
-  font-family: 'Arial', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
   margin: 0;
-  padding: 0;
-  background: #f7f9fb;
+  padding: 2rem;
+  background-color: #fff;
   color: #222;
+  line-height: 1.6;
 }
 header {
-  background-color: #1e90ff;
-  color: white;
-  padding: 1rem;
+  padding: 1rem 0;
 }
-nav a {
-  color: white;
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.name {
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+.menu a {
+  margin-left: 1rem;
+  text-decoration: none;
+  color: #555;
+}
+.menu a:hover {
+  text-decoration: underline;
+}
+h1 {
+  margin-top: 2rem;
+  font-size: 2rem;
+}
+.desc {
+  max-width: 600px;
+  margin-top: 1rem;
+}
+.icons {
+  margin-top: 1rem;
+}
+.icons a {
   margin-right: 1rem;
+}
+.updates {
+  margin-top: 3rem;
+}
+.updates h2 {
+  font-size: 1.3rem;
+}
+.updates ul {
+  list-style: none;
+  padding-left: 0;
+}
+.updates li {
+  margin: 0.5rem 0;
+}
+.updates span {
+  color: #888;
+  display: inline-block;
+  width: 90px;
+}
+footer {
+  margin-top: 4rem;
+  font-size: 0.9rem;
+  color: #777;
+}
+footer a {
+  color: #555;
   text-decoration: none;
 }
-main {
-  padding: 2rem;
+footer a:hover {
+  text-decoration: underline;
 }
