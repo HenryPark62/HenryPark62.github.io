@@ -25,7 +25,7 @@
       /* Container padding */
       --container-pad: clamp(16px, 4vw, 24px);
 
-      /* Rhythm Scale (모든 여백/간격은 이 값만 사용) */
+      /* Rhythm Scale */
       --r-1: clamp(8px, 1.2vw, 12px);
       --r-2: clamp(12px, 1.6vw, 16px);
       --r-3: clamp(16px, 2.2vw, 24px);
@@ -46,11 +46,14 @@
       padding-left: env(safe-area-inset-left);
       padding-right: env(safe-area-inset-right);
     }
+    /* ▶ 가로 스크롤 완전 차단 */
+    html, body { overflow-x: hidden; }
+
     .container{
       max-width:1180px;margin:0 auto;
-      /* ▶ 안전영역 포함한 좌우 패딩 */
-      padding-inline: calc(var(--container-pad) + env(safe-area-inset-left));
-      padding-inline: max(var(--container-pad), calc(var(--container-pad) + env(safe-area-inset-left)));
+      /* ▶ 안전영역 포함 좌/우 개별 패딩 */
+      padding-left: max(var(--container-pad), calc(var(--container-pad) + env(safe-area-inset-left)));
+      padding-right:max(var(--container-pad), calc(var(--container-pad) + env(safe-area-inset-right)));
     }
     img,svg{max-width:100%;height:auto}
     :focus-visible{outline:2px solid #00c2ff; outline-offset:3px; border-radius:6px}
@@ -70,7 +73,7 @@
     nav ul{display:flex;list-style:none;gap:var(--r-3)}
     nav a{
       color:#c7d4ef;text-decoration:none;font-weight:600;position:relative;padding-block:10px;
-      /* ▶ 링크도 터치 타깃 확보 */
+      /* ▶ 링크 터치 타깃 확보 */
       min-height:48px; display:flex; align-items:center;
     }
     nav a:hover{color:#fff}
@@ -96,7 +99,7 @@
     }
     details.nav li a{display:block;padding:var(--r-2) var(--r-3);min-height:48px}
 
-    /* Hero (centered, no mock) */
+    /* Hero */
     .hero{
       background:
         radial-gradient(1100px 600px at 80% -10%, rgba(0,194,255,.25), transparent 60%),
@@ -124,19 +127,20 @@
       padding:var(--r-2) var(--r-3);
       font-weight:800;text-decoration:none;display:inline-flex;align-items:center;gap:.5rem;
       font-size:clamp(.95rem, 1.7vw, 1.05rem);
-      min-height:48px; /* ▶ 터치 타깃 확대 */
-      line-height:1.1;cursor:pointer;
+      min-height:48px; line-height:1.1;cursor:pointer;
       transition:transform .15s, box-shadow .15s;will-change:transform;
+      max-width:100%; /* ▶ 초소형에서 넘침 방지 */
     }
     .btn.primary{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#05122c;box-shadow:0 8px 18px rgba(0,194,255,.25)}
     .btn.primary:hover{transform:translateY(-2px)}
     .btn.ghost{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);color:#e7eefc}
 
-    /* Sections (공통 리듬) */
+    /* Sections */
     section{
       padding-block:var(--r-6);
       background:var(--bg);
       scroll-margin-top:calc(var(--header-h) + var(--r-2));
+      overflow:hidden; /* ▶ 배경 넘침 방지 */
     }
     section.alt{background:linear-gradient(180deg,var(--bg2) 0%, var(--bg) 100%)}
 
@@ -166,7 +170,8 @@
       background:
         radial-gradient(900px 600px at 15% 0%,rgba(0,194,255,.18),transparent 60%),
         radial-gradient(900px 620px at 95% 100%,rgba(25,71,229,.15),transparent 60%), var(--bg2);
-      border-top:1px solid var(--line);border-bottom:1px solid var(--line)
+      border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+      overflow:hidden; /* ▶ 넘침 방지 */
     }
     .mini{padding:var(--r-3);border-radius:16px;background:rgba(255,255,255,.035);border:1px solid var(--line)}
     .mini h3{font-size:clamp(1rem,1.7vw,1.08rem);margin-bottom:var(--r-1)}
@@ -180,7 +185,7 @@
       width:100%; padding:var(--r-2);
       border:1px solid rgba(255,255,255,.16); border-radius:var(--radius);
       background:rgba(255,255,255,.03); color:#e7eefc; font-size:clamp(.95rem,1.5vw,1rem);
-      min-height:48px; /* ▶ 터치 타깃 확대 */
+      min-height:48px;
     }
     textarea{min-height:calc(var(--r-6) - var(--r-3))}
 
@@ -190,6 +195,7 @@
       border-top:1px solid var(--line);
       /* ▶ 하단 안전영역 */
       padding-bottom: calc(var(--r-5) + env(safe-area-inset-bottom));
+      overflow:hidden;
     }
     footer a{color:#c7d4ef;text-decoration:none}
     footer a:hover{color:#fff}
@@ -199,7 +205,6 @@
     .hero.hero-xl .kicker{font-size:clamp(.9rem, 1.8vw, 1.05rem);padding:.55rem 1rem;}
     .hero.hero-xl h1{font-size:clamp(2.4rem, 6vw, 3.9rem);line-height:1.08;margin-top:var(--r-2);}
     .hero.hero-xl p{font-size:clamp(1.08rem, 2vw, 1.3rem);margin:var(--r-2) 0 var(--r-3);color:#adc0e6;}
-    /* ▶ 버튼 더 큼 */
     .hero.hero-xl .btn{
       font-size:clamp(1.12rem, 2.2vw, 1.32rem);
       padding:calc(var(--r-2) + 6px) var(--r-4);
@@ -208,7 +213,7 @@
       box-shadow:0 10px 24px rgba(0,194,255,.28);
     }
 
-    /* === 카드/미니 공통 수직 간격 정렬 (배지/필 → 제목 → 본문) === */
+    /* === 카드/미니 공통 수직 간격 정렬 === */
     .card .badge, .mini .badge, .card .pill, .mini .pill { display:inline-block; margin-bottom: var(--r-1); }
     .card h3, .mini h3 { margin: 0 0 var(--r-1); }
     .card p, .mini p { margin: 0; }
@@ -288,7 +293,7 @@
   </div>
 </header>
 
-<!-- ✅ Hero 확대/중앙 정렬 -->
+<!-- ✅ Hero -->
 <main id="home" class="hero hero-xl">
   <div class="container wrap">
     <div>
@@ -431,20 +436,15 @@
   </div>
 </footer>
 
-<!-- 최상단 고정: 해시 제거 + 스크롤 복원 비활성 + 해시 없는 스크롤 + 모바일 메뉴 스크롤 잠금 -->
+<!-- 상단 고정 & 해시 없는 스크롤 + 모바일 메뉴 스크롤 잠금 -->
 <script>
-  // 이전 스크롤 위치 복원 방지
-  if ('scrollRestoration' in history) {
-    history.scrollRestoration = 'manual';
-  }
-  // 로드 시 해시가 있으면 제거하고 최상단으로
+  if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
   window.addEventListener('load', () => {
     if (location.hash) {
       history.replaceState(null, '', location.pathname + location.search);
       window.scrollTo(0, 0);
     }
   });
-  // 내부 앵커 클릭 시 해시 없이 스크롤 + 모바일 메뉴 닫기
   document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', (e) => {
       const id = a.getAttribute('href');
@@ -455,20 +455,14 @@
       target.scrollIntoView({ behavior: 'smooth', block: 'start' });
       const navDetails = document.querySelector('details.nav[open]');
       if (navDetails) navDetails.open = false;
-      // 메뉴 닫힐 때 스크롤 복원
       document.body.style.overflow = '';
     });
   });
 
-  // 모바일 메뉴 열릴 때 배경 스크롤 잠금
   const detailsNav = document.querySelector('details.nav');
   if (detailsNav) {
     detailsNav.addEventListener('toggle', () => {
-      if (detailsNav.open) {
-        document.body.style.overflow = 'hidden';
-      } else {
-        document.body.style.overflow = '';
-      }
+      document.body.style.overflow = detailsNav.open ? 'hidden' : '';
     });
   }
 </script>
