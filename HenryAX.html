@@ -2,7 +2,8 @@
 <html lang="ko">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- ▶ 모바일 안전영역까지 활용 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Henry AX | 의료 AI의 혁신</title>
   <meta name="description" content="의료 AI 반자동 라벨링, 합성 데이터, 시계열 예측 및 안질환 진단 Aeyes 솔루션">
   <meta name="theme-color" content="#0a1022">
@@ -41,23 +42,37 @@
       font-family:'Pretendard',system-ui,-apple-system,Segoe UI,Roboto,'Noto Sans KR',sans-serif;
       background:var(--bg); color:var(--text); line-height:1.65; -webkit-font-smoothing:antialiased;
       font-size: clamp(15px, 1.2vw, 16px);
+      /* ▶ iOS 홈바/노치 안전 여백 */
+      padding-left: env(safe-area-inset-left);
+      padding-right: env(safe-area-inset-right);
     }
-    .container{max-width:1180px;margin:0 auto;padding-inline:var(--container-pad)}
+    .container{
+      max-width:1180px;margin:0 auto;
+      /* ▶ 안전영역 포함한 좌우 패딩 */
+      padding-inline: calc(var(--container-pad) + env(safe-area-inset-left));
+      padding-inline: max(var(--container-pad), calc(var(--container-pad) + env(safe-area-inset-left)));
+    }
     img,svg{max-width:100%;height:auto}
     :focus-visible{outline:2px solid #00c2ff; outline-offset:3px; border-radius:6px}
 
     /* Header */
     header{
       position:sticky;top:0;z-index:10;background:rgba(7,12,28,.7);
-      backdrop-filter:saturate(150%) blur(10px);border-bottom:1px solid var(--line)
+      backdrop-filter:saturate(150%) blur(10px);border-bottom:1px solid var(--line);
+      /* ▶ 상단 안전영역 */
+      padding-top: env(safe-area-inset-top);
     }
     .bar{height:var(--header-h);display:flex;align-items:center;justify-content:space-between;gap:var(--r-2)}
-    .logo{display:inline-flex;gap:.55rem;align-items:center;font-weight:800;font-size:clamp(1rem,2.2vw,1.1rem);text-decoration:none;color:#cfe3ff}
+    .logo{display:inline-flex;gap:.55rem;align-items:center;font-weight:800;font-size:clamp(1rem,2.2vw,1.1rem);text-decoration:none;color:#cfe3ff; min-height:48px; align-items:center}
     .logo::before{content:'🧬';}
 
     /* Desktop nav */
     nav ul{display:flex;list-style:none;gap:var(--r-3)}
-    nav a{color:#c7d4ef;text-decoration:none;font-weight:600;position:relative;padding-block:10px}
+    nav a{
+      color:#c7d4ef;text-decoration:none;font-weight:600;position:relative;padding-block:10px;
+      /* ▶ 링크도 터치 타깃 확보 */
+      min-height:48px; display:flex; align-items:center;
+    }
     nav a:hover{color:#fff}
     nav a[aria-current="page"]{color:#fff}
     nav a[aria-current="page"]::after{
@@ -79,7 +94,7 @@
       background:rgba(7,12,28,.97); padding:var(--r-1) 0; margin-top:-1px; display:block;
       max-height:60vh; overflow:auto;
     }
-    details.nav li a{display:block;padding:var(--r-2) var(--r-3);min-height:44px}
+    details.nav li a{display:block;padding:var(--r-2) var(--r-3);min-height:48px}
 
     /* Hero (centered, no mock) */
     .hero{
@@ -108,7 +123,9 @@
       appearance:none;border:0;border-radius:var(--radius);
       padding:var(--r-2) var(--r-3);
       font-weight:800;text-decoration:none;display:inline-flex;align-items:center;gap:.5rem;
-      font-size:clamp(.95rem, 1.7vw, 1.05rem);min-height:44px;line-height:1.1;cursor:pointer;
+      font-size:clamp(.95rem, 1.7vw, 1.05rem);
+      min-height:48px; /* ▶ 터치 타깃 확대 */
+      line-height:1.1;cursor:pointer;
       transition:transform .15s, box-shadow .15s;will-change:transform;
     }
     .btn.primary{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#05122c;box-shadow:0 8px 18px rgba(0,194,255,.25)}
@@ -163,14 +180,16 @@
       width:100%; padding:var(--r-2);
       border:1px solid rgba(255,255,255,.16); border-radius:var(--radius);
       background:rgba(255,255,255,.03); color:#e7eefc; font-size:clamp(.95rem,1.5vw,1rem);
-      min-height:44px;
+      min-height:48px; /* ▶ 터치 타깃 확대 */
     }
     textarea{min-height:calc(var(--r-6) - var(--r-3))}
 
     /* Footer */
     footer{
       background:#070d1f;color:#8ea2cc;padding-block:var(--r-5);margin-top:var(--r-4);
-      border-top:1px solid var(--line)
+      border-top:1px solid var(--line);
+      /* ▶ 하단 안전영역 */
+      padding-bottom: calc(var(--r-5) + env(safe-area-inset-bottom));
     }
     footer a{color:#c7d4ef;text-decoration:none}
     footer a:hover{color:#fff}
@@ -207,6 +226,10 @@
       details.nav{display:block}
       .bar{gap:var(--r-1)}
     }
+    /* ▶ 폼 2열 → 1열 전환 임계값 */
+    @media (max-width:560px){
+      form.card > div[style*="grid-template-columns"]{ grid-template-columns:1fr !important; }
+    }
     @media (max-width:520px){
       .grid-3,.grid-4{grid-template-columns:1fr}
       .cta{gap:var(--r-1)}
@@ -218,6 +241,13 @@
         padding:calc(var(--r-2) + 4px) var(--r-4);
       }
     }
+    /* ▶ 초소형 디바이스 보정 */
+    @media (max-width:400px){
+      .kicker{font-size:.8rem}
+      .hero.hero-xl h1{letter-spacing:-.01em}
+      .btn{min-height:50px}
+    }
+
     @media (prefers-reduced-motion: reduce){
       *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
     }
@@ -401,7 +431,7 @@
   </div>
 </footer>
 
-<!-- 최상단 고정: 해시 제거 + 스크롤 복원 비활성 + 해시 없는 스크롤 -->
+<!-- 최상단 고정: 해시 제거 + 스크롤 복원 비활성 + 해시 없는 스크롤 + 모바일 메뉴 스크롤 잠금 -->
 <script>
   // 이전 스크롤 위치 복원 방지
   if ('scrollRestoration' in history) {
@@ -425,8 +455,22 @@
       target.scrollIntoView({ behavior: 'smooth', block: 'start' });
       const navDetails = document.querySelector('details.nav[open]');
       if (navDetails) navDetails.open = false;
+      // 메뉴 닫힐 때 스크롤 복원
+      document.body.style.overflow = '';
     });
   });
+
+  // 모바일 메뉴 열릴 때 배경 스크롤 잠금
+  const detailsNav = document.querySelector('details.nav');
+  if (detailsNav) {
+    detailsNav.addEventListener('toggle', () => {
+      if (detailsNav.open) {
+        document.body.style.overflow = 'hidden';
+      } else {
+        document.body.style.overflow = '';
+      }
+    });
+  }
 </script>
 
 </body>
