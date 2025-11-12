@@ -20,6 +20,7 @@
       --r-3: clamp(16px, 2.2vw, 24px); --r-4: clamp(20px, 3.0vw, 32px);
       --r-5: clamp(28px, 4.2vw, 48px); --r-6: clamp(48px, 7.0vw, 96px);
     }
+
     *{box-sizing:border-box;margin:0;padding:0}
     html,body{min-height:100%}
     html{scroll-behavior:smooth;}
@@ -30,8 +31,8 @@
       font-size: clamp(15px, 1.2vw, 16px);
       padding-left: env(safe-area-inset-left);
       padding-right: env(safe-area-inset-right);
+      overflow-x:hidden;
     }
-    html, body { overflow-x: hidden; }
 
     .container{
       max-width:1180px;margin:0 auto;
@@ -113,7 +114,6 @@
     .btn.primary:hover{transform:translateY(-2px)}
     .btn.ghost{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);color:#e7eefc}
 
-    /* 이미지 카드 (믹스 블렌딩으로 흰 배경 제거) */
     .mock{
       position:relative;border-radius:24px;overflow:hidden;
       border:1px solid rgba(255,255,255,.12);
@@ -123,21 +123,7 @@
         linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
       box-shadow: inset 0 0 40px rgba(124,58,237,.14), 0 18px 40px rgba(0,0,0,.28);
     }
-    .mock img{
-      display:block;width:100%;height:auto;border-radius:inherit;
-      /* 핵심: 흰 배경을 어둡게 섞어 제거 */
-      mix-blend-mode:multiply;
-      opacity:.97;
-      filter: contrast(1.06) saturate(1.04) brightness(0.98);
-      /* 엣지 부드럽게 */
-      -webkit-mask-image: radial-gradient(120% 120% at 50% 50%, #000 78%, rgba(0,0,0,0) 100%);
-              mask-image: radial-gradient(120% 120% at 50% 50%, #000 78%, rgba(0,0,0,0) 100%);
-    }
-    .mock::after{
-      content:"";position:absolute;inset:0;
-      background: linear-gradient(180deg, rgba(10,12,26,.0), rgba(10,12,26,.10));
-      pointer-events:none;
-    }
+    .mock canvas{display:block;width:100%;height:auto;border-radius:inherit}
 
     .band{
       background:
@@ -229,34 +215,12 @@
       </div>
     </div>
 
-    <!-- ✅ 경로를 실제 위치로 변경 -->
-    <figure class="mock" aria-label="Aeyes 시각화 예시">
-      <img src="assets/aeyes.png" alt="Aeyes: DR Severity 시각화" loading="eager" decoding="async">
+    <figure class="mock" aria-label="Aeyes 시각화 (화이트 키잉)">
+      <!-- 먼저 원본 이미지를 노출(안전). 처리 성공 시 JS가 숨김 -->
+      <img id="aeyesImg" src="assets/aeyes.png" alt="Aeyes: DR Severity 시각화" />
+      <canvas id="aeyesCanvas" width="1600" height="1200" aria-label="Aeyes processed canvas" style="display:none;"></canvas>
+      <noscript><img src="assets/aeyes.png" alt="Aeyes: DR Severity 시각화 (noscript)"></noscript>
     </figure>
-
-    <!--
-    ※ SVG 키잉(마스크) 버전을 계속 쓰고 싶다면 아래 주석을 풀고 쓰세요.
-       외부 이미지가 마스크에 들어갈 때는 브라우저/서버 CORS 영향으로 로드가 막힐 수 있어
-       동일 출처(같은 도메인)에서 제공해야 합니다.
-    <figure class="mock" aria-label="Aeyes 시각화 예시 - SVG">
-      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-           viewBox="0 0 1600 1200" preserveAspectRatio="xMidYMid meet">
-        <defs>
-          <filter id="rm-white" color-interpolation-filters="sRGB">
-            <feColorMatrix in="SourceGraphic" type="luminanceToAlpha" result="lum"/>
-            <feComponentTransfer in="lum" result="inv">
-              <feFuncA type="table" tableValues="1 0"/>
-            </feComponentTransfer>
-            <feComponentTransfer><feFuncA type="linear" slope="4" intercept="-2"/></feComponentTransfer>
-          </filter>
-          <mask id="whiteMask" maskUnits="userSpaceOnUse">
-            <image xlink:href="/mnt/data/5_Crop.png" x="0" y="0" width="1600" height="1200" filter="url(#rm-white)"/>
-          </mask>
-        </defs>
-        <image xlink:href="/mnt/data/5_Crop.png" x="0" y="0" width="1600" height="1200" mask="url(#whiteMask)"/>
-      </svg>
-    </figure>
-    -->
   </div>
 </section>
 
@@ -434,6 +398,120 @@
       document.body.style.overflow = detailsNav.open ? 'hidden' : '';
     });
   }
+</script>
+
+<!-- Canvas 화이트 키잉 (흰 배경 제거 + 밝기 유지, 실패 시 자동 폴백) -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const img = document.getElementById('aeyesImg');
+  const canvas = document.getElementById('aeyesCanvas');
+  if (!img || !canvas) return;
+
+  // 튜닝 파라미터
+  const WHITE_THRESHOLD = 245; // 0~255: 더 낮추면 덜 지움, 올리면 더 지움
+  const FEATHER = 6;           // 경계 부드럽게(px). 0이면 없음
+  const MIN_SAT = 15;          // 채도 임계. 0으로 두면 채도조건 미적용
+
+  function render() {
+    try {
+      const dpr = window.devicePixelRatio || 1;
+      const w = img.naturalWidth || img.width;
+      const h = img.naturalHeight || img.height;
+
+      if (!w || !h) return; // 이미지 아직 로딩 전
+
+      canvas.width = Math.round(w * dpr);
+      canvas.height = Math.round(h * dpr);
+      canvas.style.width = '100%';
+      canvas.style.height = 'auto';
+
+      const ctx = canvas.getContext('2d', { willReadFrequently: true });
+      if (!ctx) return;
+
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.imageSmoothingEnabled = true;
+      ctx.clearRect(0,0,w,h);
+      ctx.drawImage(img, 0, 0, w, h);
+
+      let imageData;
+      try {
+        imageData = ctx.getImageData(0, 0, w, h);
+      } catch (e) {
+        // 보안(CORS) 문제면 즉시 폴백(원본 유지)
+        console.warn('getImageData blocked (likely CORS). Keeping original image.', e);
+        canvas.style.display = 'none';
+        img.style.display = '';
+        return;
+      }
+
+      const data = imageData.data;
+
+      // 1) 거의 흰 + 저채도 픽셀 투명화
+      for (let i = 0; i < data.length; i += 4) {
+        const r = data[i], g = data[i+1], b = data[i+2];
+        const maxc = r > g ? (r > b ? r : b) : (g > b ? g : b);
+        const minc = r < g ? (r < b ? r : b) : (g < b ? g : b);
+        const sat = maxc - minc;
+
+        if (r >= WHITE_THRESHOLD && g >= WHITE_THRESHOLD && b >= WHITE_THRESHOLD && sat <= MIN_SAT) {
+          data[i+3] = 0;
+        }
+      }
+
+      // 2) 경계 페더링(간단 확산)
+      if (FEATHER > 0) {
+        const wpx = w, hpx = h;
+        const alpha = new Uint8ClampedArray(wpx * hpx);
+        for (let p=0,q=3; p<alpha.length; p++, q+=4) alpha[p] = data[q];
+
+        const passes = Math.max(1, Math.round(FEATHER/2));
+        for (let t=0; t<passes; t++) {
+          for (let y=1; y<hpx-1; y++) {
+            for (let x=1; x<wpx-1; x++) {
+              const idx = y*wpx + x;
+              const avg = (alpha[idx] + alpha[idx-1] + alpha[idx+1] + alpha[idx-wpx] + alpha[idx+wpx]) / 5;
+              const qi = idx*4 + 3;
+              if (data[qi] > 0 && data[qi] < 255) {
+                data[qi] = Math.min(255, (data[qi]*3 + avg*2)/5);
+              }
+            }
+          }
+        }
+      }
+
+      ctx.putImageData(imageData, 0, 0);
+
+      // 성공: 캔버스 노출, 원본 숨김
+      canvas.style.display = '';
+      img.style.display = 'none';
+    } catch (err) {
+      console.error('Canvas key-out failed:', err);
+      // 실패 시 폴백
+      canvas.style.display = 'none';
+      img.style.display = '';
+    }
+  }
+
+  if (img.complete && img.naturalWidth) {
+    render();
+  } else {
+    img.addEventListener('load', render, { once:true });
+    img.addEventListener('error', () => {
+      console.error('이미지 로드 실패: assets/aeyes.png');
+      canvas.style.display = 'none';
+      img.style.display = '';
+    }, { once:true });
+  }
+
+  // 리사이즈 시 재렌더(선명도 유지)
+  let t;
+  window.addEventListener('resize', () => {
+    clearTimeout(t);
+    t = setTimeout(() => {
+      if (img.style.display === 'none') render(); // 처리된 상태에서만 재렌더
+    }, 150);
+  });
+});
 </script>
 
 </body>
