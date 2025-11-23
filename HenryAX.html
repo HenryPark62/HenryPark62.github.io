@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Henry AX | 의료 AI의 혁신</title>
   <meta name="description" content="의료 AI 반자동 라벨링, 합성 데이터, 시계열 예측 및 안질환 진단 Aeyes 솔루션">
-  <meta name="theme-color" content="#0a1022">
+  <meta name="theme-color" content="#050712">
   <meta name="color-scheme" content="dark">
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css"/>
@@ -14,11 +14,15 @@
   <!-- 기본 스타일 -->
   <style>
     :root{
-      /* Brand & Colors (로고 팔레트에 맞게 약간 조정해도 좋음) */
+      /* Brand & Colors */
       --brand:#1947e5; 
       --brand2:#00c2ff;
-      --bg:#0a1022; --bg2:#0d1530; --card:#0f1a3a;
-      --text:#e7eefc; --muted:#b8c9ee; --line:rgba(255,255,255,.08);
+      --bg:#050712; 
+      --bg2:#0d1530; 
+      --card:#0f1a3a;
+      --text:#e7eefc; 
+      --muted:#b8c9ee; 
+      --line:rgba(255,255,255,.08);
 
       /* Radius / Header */
       --radius: 14px;
@@ -42,25 +46,30 @@
     html{scroll-behavior:smooth;}
     body{
       font-family:'Pretendard',system-ui,-apple-system,Segoe UI,Roboto,'Noto Sans KR',sans-serif;
-      background:var(--bg); color:var(--text); line-height:1.65; -webkit-font-smoothing:antialiased;
+      color:var(--text); 
+      line-height:1.65; 
+      -webkit-font-smoothing:antialiased;
       font-size: clamp(15px, 1.2vw, 16px);
-      /* ▶ iOS 홈바/노치 안전 여백 */
       padding-left: env(safe-area-inset-left);
       padding-right: env(safe-area-inset-right);
+      overflow-x:hidden;
+      background-color:#050712;   /* 🔹 기본 바탕색만 두고, 그라데이션은 ::before에서 */
+      position: relative;
     }
-    /* ▶ 가로 스크롤 완전 차단 */
-    html, body { overflow-x: hidden; }
 
     .container{
-      max-width:1180px;margin:0 auto;
-      /* ▶ 안전영역 포함 좌/우 개별 패딩 */
+      max-width:1180px;
+      margin:0 auto;
       padding-left: max(var(--container-pad), calc(var(--container-pad) + env(safe-area-inset-left)));
       padding-right:max(var(--container-pad), calc(var(--container-pad) + env(safe-area-inset-right)));
     }
 
-    /* 🔹 헤더 영역만 로고를 더 왼쪽으로 붙이기 */
+    /* 🔹 헤더 전용: 전체 폭 + 왼쪽 정렬 */
     header .container{
-      padding-left: max(8px, calc(8px + env(safe-area-inset-left)));
+      max-width:none;
+      margin:0;
+      padding-left:max(24px, calc(24px + env(safe-area-inset-left)));
+      padding-right:max(32px, calc(32px + env(safe-area-inset-right)));
     }
 
     img,svg{max-width:100%;height:auto}
@@ -68,9 +77,15 @@
 
     /* Header */
     header{
-      position:sticky;top:0;z-index:10;background:rgba(7,12,28,.7);
-      backdrop-filter:saturate(150%) blur(10px);border-bottom:1px solid var(--line);
-      /* ▶ 상단 안전영역 */
+      position:sticky;top:0;z-index:10;
+      /* 약간 더 어두운 네비 배경 + 글로우 */
+      background:linear-gradient(
+        90deg,
+        rgba(5,7,18,0.96),
+        rgba(8,14,32,0.96)
+      );
+      backdrop-filter:saturate(150%) blur(14px);
+      border-bottom:1px solid var(--line);
       padding-top: env(safe-area-inset-top);
     }
     .bar{
@@ -87,25 +102,47 @@
       min-height:48px;
     }
     .logo img{
-      /* 🔺 헤더 CI 로고 크게 */
-      height:clamp(72px, 6vw, 96px);
+      height:clamp(60px, 3.6vw, 70px);
       width:auto;
       display:block;
     }
-    .logo::before{content:none;} /* 이모지 제거 */
+    .logo::before{content:none;}
 
     /* Desktop nav */
     nav ul{display:flex;list-style:none;gap:var(--r-3)}
-    nav a{
+    nav a.nav-link{
       color:#c7d4ef;text-decoration:none;font-weight:600;position:relative;padding-block:10px;
-      /* ▶ 링크 터치 타깃 확보 */
       min-height:48px; display:flex; align-items:center;
+      letter-spacing:0.01em;
     }
-    nav a:hover{color:#fff}
-    nav a[aria-current="page"]{color:#fff}
-    nav a[aria-current="page"]::after{
-      content:""; position:absolute; left:0; bottom:-6px; height:2px; width:100%;
+    nav a.nav-link:hover{color:#fff}
+    nav a.nav-link[aria-current="page"]{color:#fff}
+
+    /* 🔥 네온 + pulse 애니메이션 */
+    nav a.nav-link::after{
+      content:"";
+      position:absolute;
+      left:0;
+      bottom:-6px;
+      width:100%;
+      height:2px;
+      border-radius:999px;
       background:linear-gradient(90deg,var(--brand),var(--brand2));
+      box-shadow:0 0 10px rgba(0,194,255,.75), 0 0 18px rgba(25,71,229,.8);
+      opacity:0;
+      transform:scaleX(.4);
+      transform-origin:center;
+      transition:opacity .18s ease, transform .18s ease;
+    }
+    nav a.nav-link.is-active::after{
+      opacity:1;
+      transform:scaleX(1);
+      animation:neonPulse 1.6s ease-out infinite;
+    }
+    @keyframes neonPulse{
+      0%{box-shadow:0 0 9px rgba(0,194,255,.70),0 0 16px rgba(25,71,229,.75); opacity:1;}
+      45%{box-shadow:0 0 15px rgba(0,194,255,.95),0 0 28px rgba(25,71,229,1); opacity:1;}
+      100%{box-shadow:0 0 9px rgba(0,194,255,.70),0 0 16px rgba(25,71,229,.75); opacity:1;}
     }
 
     /* Mobile nav (details) */
@@ -114,37 +151,51 @@
       list-style:none; cursor:pointer; user-select:none;
       border:1px solid var(--line); border-radius:10px; padding:var(--r-2) var(--r-3);
       min-height:44px; display:inline-flex; align-items:center;
-      color:#cfe3ff; background:rgba(255,255,255,.05)
+      color:#cfe3ff; background:rgba(8,13,32,.85)
     }
     details.nav[open] summary{border-bottom-left-radius:0;border-bottom-right-radius:0}
     details.nav ul{
       border:1px solid var(--line); border-top:0; border-bottom-left-radius:10px;border-bottom-right-radius:10px;
-      background:rgba(7,12,28,.97); padding:var(--r-1) 0; margin-top:-1px; display:block;
+      background:rgba(5,7,18,.98); padding:var(--r-1) 0; margin-top:-1px; display:block;
       max-height:60vh; overflow:auto;
     }
     details.nav li a{display:block;padding:var(--r-2) var(--r-3);min-height:48px}
 
     /* Hero */
     .hero{
-      background:
-        radial-gradient(1100px 600px at 80% -10%, rgba(0,194,255,.25), transparent 60%),
-        radial-gradient(1000px 700px at -10% 100%, rgba(25,71,229,.25), transparent 60%),
-        var(--bg2);
+      position:relative;
+      background:transparent;
     }
+    .hero::before{
+      /* 상단쪽만 살짝 더 밝게 글로우 */
+      content:"";
+      position:absolute;
+      inset:-220px -120px 40%;
+      background:
+        radial-gradient(circle at 20% 0%, rgba(0,194,255,0.44), transparent 60%),
+        radial-gradient(circle at 80% 0%, rgba(25,71,229,0.44), transparent 60%);
+      filter:blur(28px);
+      opacity:0.9;
+      pointer-events:none;
+      z-index:-1;
+    }
+
     .hero .wrap{
-      min-height:clamp(460px, 86svh, 760px);
+      min-height:clamp(520px, 88vh, 860px);
       display:grid;grid-template-columns:1fr;gap:var(--r-5);align-items:center;
-      padding-block:var(--r-6); justify-items:center; text-align:center;
+      padding-block:var(--r-6); 
+      justify-items:center; 
+      text-align:center;
     }
     .hero .wrap>div{margin-inline:auto;}
     .kicker{
       display:inline-block;padding:.45rem .9rem;border-radius:999px;
       background:rgba(0,194,255,.12);color:#9bdcff;font-weight:800;
-      font-size:clamp(.78rem,1.4vw,.86rem); border:1px solid rgba(0,194,255,.25)
+      font-size:clamp(.78rem,1.4vw,.9rem); border:1px solid rgba(0,194,255,.25)
     }
     h1{
       margin-top:var(--r-2);
-      font-size:clamp(2rem, 4.6vw, 3.2rem);
+      font-size:clamp(2.4rem, 4.8vw, 3.4rem);
       line-height:1.12;letter-spacing:-.02em;font-weight:800
     }
     .grad{
@@ -154,7 +205,7 @@
     }
     .hero p{
       margin:var(--r-2) 0 var(--r-3);
-      color:#adc0e6;font-size:clamp(1rem,1.6vw,1.15rem)
+      color:#adc0e6;font-size:clamp(1.02rem,1.8vw,1.22rem)
     }
     .cta{
       display:flex;gap:var(--r-2);flex-wrap:wrap;justify-content:center
@@ -164,30 +215,36 @@
       appearance:none;border:0;border-radius:var(--radius);
       padding:var(--r-2) var(--r-3);
       font-weight:800;text-decoration:none;display:inline-flex;align-items:center;gap:.5rem;
-      font-size:clamp(.95rem, 1.7vw, 1.05rem);
+      font-size:clamp(.98rem, 1.9vw, 1.12rem);
       min-height:48px; line-height:1.1;cursor:pointer;
-      transition:transform .15s, box-shadow .15s;will-change:transform;
-      max-width:100%; /* ▶ 초소형에서 넘침 방지 */
+      transition:transform .15s, box-shadow .15s, background .15s;will-change:transform;
+      max-width:100%;
     }
     .btn.primary{
       background:linear-gradient(135deg,var(--brand),var(--brand2));
-      color:#05122c;box-shadow:0 8px 18px rgba(0,194,255,.25)
+      color:#05122c;box-shadow:0 10px 24px rgba(0,194,255,.28)
     }
-    .btn.primary:hover{transform:translateY(-2px)}
+    .btn.primary:hover{
+      transform:translateY(-2px);
+      box-shadow:0 14px 32px rgba(0,194,255,.35);
+    }
     .btn.ghost{
-      background:rgba(255,255,255,.06);
-      border:1px solid rgba(255,255,255,.14);color:#e7eefc
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.16);color:#e7eefc
+    }
+    .btn.ghost:hover{
+      background:rgba(255,255,255,.08);
     }
 
     /* Sections */
     section{
       padding-block:var(--r-6);
-      background:var(--bg);
+      background:transparent;
       scroll-margin-top:calc(var(--header-h) + var(--r-2));
-      overflow:hidden; /* ▶ 배경 넘침 방지 */
+      overflow:hidden;
     }
     section.alt{
-      background:linear-gradient(180deg,var(--bg2) 0%, var(--bg) 100%)
+      background:transparent;
     }
 
     .title{
@@ -209,7 +266,9 @@
 
     .card{
       background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.02));
-      border:1px solid var(--line); border-radius:18px; padding:var(--r-3)
+      border:1px solid var(--line); border-radius:18px; padding:var(--r-3);
+      box-shadow:0 14px 40px rgba(0,0,0,0.45);
+      backdrop-filter:blur(8px);
     }
     .card h3{
       font-size:clamp(1.02rem,1.8vw,1.12rem);
@@ -230,19 +289,33 @@
 
     .band{
       padding-block:var(--r-6);
-      background:
-        radial-gradient(900px 600px at 15% 0%,rgba(0,194,255,.18),transparent 60%),
-        radial-gradient(900px 620px at 95% 100%,rgba(25,71,229,.15),transparent 60%), var(--bg2);
+      background:transparent;
       border-top:1px solid var(--line);border-bottom:1px solid var(--line);
-      overflow:hidden; /* ▶ 넘침 방지 */
+      overflow:hidden;
+      position:relative;
     }
+    .band::before{
+      /* 섹션 전체 배경은 유지하면서, band 섹션만 살짝 하이라이트 */
+      content:"";
+      position:absolute;
+      inset:-40% 10% 40%;
+      background:
+        radial-gradient(120% 120% at 50% 0%, rgba(0,194,255,0.10), transparent 65%);
+      opacity:0.9;
+      pointer-events:none;
+      z-index:-1;
+    }
+
     .mini{
       padding:var(--r-3);border-radius:16px;
-      background:rgba(255,255,255,.035);border:1px solid var(--line)
+      background:rgba(10,15,32,.85);border:1px solid var(--line);
+      box-shadow:0 12px 30px rgba(0,0,0,0.5);
+      backdrop-filter:blur(6px);
     }
     .mini h3{
       font-size:clamp(1rem,1.7vw,1.08rem);
-      margin-bottom:var(--r-1)
+      margin-bottom:var(--r-1);
+      color:#f1f6ff
     }
     .mini p{color:#b7c6e6;font-size:clamp(.93rem,1.5vw,1rem)}
 
@@ -257,55 +330,27 @@
     input, select, textarea{
       width:100%; padding:var(--r-2);
       border:1px solid rgba(255,255,255,.16); border-radius:var(--radius);
-      background:rgba(255,255,255,.03); color:#e7eefc; font-size:clamp(.95rem,1.5vw,1rem);
+      background:rgba(8,12,28,.9); color:#e7eefc; font-size:clamp(.95rem,1.5vw,1rem);
       min-height:48px;
     }
     textarea{min-height:calc(var(--r-6) - var(--r-3))}
 
     /* Footer */
     footer{
-      background:#070d1f;color:#8ea2cc;padding-block:var(--r-5);margin-top:var(--r-4);
+      background:transparent;
+      color:#8ea2cc;
+      padding-block:var(--r-5);
+      margin-top:var(--r-4);
       border-top:1px solid var(--line);
-      /* ▶ 하단 안전영역 */
       padding-bottom: calc(var(--r-5) + env(safe-area-inset-bottom));
       overflow:hidden;
     }
     footer a{color:#c7d4ef;text-decoration:none}
     footer a:hover{color:#fff}
 
-    /* ✅ HERO XL (텍스트/버튼 확대 전용) */
-    .hero.hero-xl .wrap{min-height:clamp(520px, 92svh, 860px);}
-    .hero.hero-xl .kicker{
-      font-size:clamp(.9rem, 1.8vw, 1.05rem);
-      padding:.55rem 1rem;
-    }
-    .hero.hero-xl h1{
-      font-size:clamp(2.4rem, 6vw, 3.9rem);
-      line-height:1.08;margin-top:var(--r-2);
-    }
-    .hero.hero-xl p{
-      font-size:clamp(1.08rem, 2vw, 1.3rem);
-      margin:var(--r-2) 0 var(--r-3);color:#adc0e6;
-    }
-    .hero.hero-xl .btn{
-      font-size:clamp(1.12rem, 2.2vw, 1.32rem);
-      padding:calc(var(--r-2) + 6px) var(--r-4);
-      min-height:56px;
-      border-radius:20px;
-      box-shadow:0 10px 24px rgba(0,194,255,.28);
-    }
-
-    /* === 카드/미니 공통 수직 간격 정렬 === */
-    .card .badge, .mini .badge, .card .pill, .mini .pill {
-      display:inline-block; margin-bottom: var(--r-1);
-    }
-    .card h3, .mini h3 { margin: 0 0 var(--r-1); }
-    .card p, .mini p { margin: 0; }
-
-    /* 🔹 Hero 안에서 쓰는 CI 로고 (중앙) */
+    /* Hero 중앙 CI 로고 */
     .hero-logo{
-      /* 중앙 CI 더 크게 */
-      max-width:500px;
+      max-width:360px;
       width:80%;
       height:auto;
       margin:0 auto var(--r-2);
@@ -313,7 +358,7 @@
     }
     @media (min-width:800px){
       .hero-logo{
-        max-width:500px;
+        max-width:360px;
         margin-bottom:var(--r-3);
       }
     }
@@ -331,7 +376,6 @@
       details.nav{display:block}
       .bar{gap:var(--r-1)}
     }
-    /* ▶ 폼 2열 → 1열 전환 임계값 */
     @media (max-width:560px){
       form.card > div[style*="grid-template-columns"]{
         grid-template-columns:1fr !important;
@@ -340,22 +384,10 @@
     @media (max-width:520px){
       .grid-3,.grid-4{grid-template-columns:1fr}
       .cta{gap:var(--r-1)}
-      .hero.hero-xl h1{
-        font-size:clamp(2.05rem,8vw,2.6rem);
-      }
-      .hero.hero-xl p{
-        font-size:clamp(1rem,4.2vw,1.15rem);
-      }
-      .hero.hero-xl .btn{
-        font-size:clamp(1.02rem,4.4vw,1.12rem);
-        min-height:52px;
-        padding:calc(var(--r-2) + 4px) var(--r-4);
-      }
     }
-    /* ▶ 초소형 디바이스 보정 */
     @media (max-width:400px){
       .kicker{font-size:.8rem}
-      .hero.hero-xl h1{letter-spacing:-.01em}
+      .hero h1{letter-spacing:-.01em}
       .btn{min-height:50px}
     }
 
@@ -368,72 +400,38 @@
     }
   </style>
 
-  <!-- 🔥 전역 첨단 그라데이션 + 그리드 + 섹션 배경 통합 오버라이드 -->
+  <!-- 🔥 전역 그라데이션 + 얇은 그리드 오버레이 (Upstage 느낌) -->
   <style>
-    /* 전체 페이지 공통 배경 */
-    body {
-      background-color:#050712;
-      background-image:
-        radial-gradient(120% 150% at 0% 0%, #151e3b 0%, #050712 45%, #02030a 100%),
-        radial-gradient(90% 130% at 100% 0%, rgba(25,71,229,0.4), transparent 60%),
-        radial-gradient(100% 140% at 10% 100%, rgba(0,194,255,0.3), transparent 55%);
-      background-attachment: fixed;
-      background-size: cover;
-      position: relative;
-    }
-
-    /* 얇은 산업형 그리드 */
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: -1;
-      background-image:
-        linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-      background-size: 42px 42px;
-      opacity: 0.15;
-      mix-blend-mode: soft-light;
-    }
-
-    /* Hero는 전역 배경 위에서 글로우만 */
-    .hero {
-      position: relative;
-      background: transparent;
-    }
-    .hero::before {
-      content: "";
-      position: absolute;
-      inset: -180px -80px 40%;
-      background:
-        radial-gradient(circle at 10% 0%, rgba(0,194,255,0.42), transparent 60%),
-        radial-gradient(circle at 80% 0%, rgba(25,71,229,0.38), transparent 60%);
-      filter: blur(28px);
-      opacity: 1;
-      z-index: -1;
+    /* 전역 flexible gradient: 최상단~최하단까지 하나로 이어지게 */
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
       pointer-events:none;
+      z-index:-2;
+      /* 여러 개의 radial을 섞어서 flexible한 느낌 */
+      background-image:
+        radial-gradient(140% 200% at 0% 0%,    #141c3c 0%, #050712 55%, #02030a 100%),
+        radial-gradient(120% 180% at 100% 0%,  rgba(0,194,255,0.28), transparent 65%),
+        radial-gradient(170% 260% at 15% 110%, rgba(25,71,229,0.32), transparent 70%),
+        radial-gradient(160% 240% at 80% 120%, rgba(0,120,220,0.22), transparent 70%);
+      background-repeat:no-repeat;
+      background-size:cover;
     }
 
-    /* 섹션 배경을 모두 투명화 */
-    section {
-      background: transparent !important;
-    }
-    section.alt {
-      background: transparent !important;
-    }
-
-    /* band 섹션도 투명 + 경계선만 */
-    .band {
-      background: transparent !important;
-      border-top: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
-    }
-
-    /* footer도 전역 배경 위에 얹히도록 */
-    footer {
-      background: transparent !important;
-      border-top: 1px solid var(--line);
+    /* 얇은 격자 그리드 오버레이 */
+    body::after{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:-1;
+      background-image:
+        linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px);
+      background-size:46px 46px;
+      opacity:0.18;
+      mix-blend-mode:soft-light;
     }
   </style>
 </head>
@@ -441,7 +439,6 @@
 
 <header>
   <div class="container bar">
-    <!-- 🔹 헤더에 CI 로고 적용 -->
     <a class="logo" href="#home" aria-label="Henry AX 홈">
       <img src="assets/CI_HenryAX.png" alt="Henry AX · AI Retinal Diagnostics · Aeyes">
     </a>
@@ -449,37 +446,35 @@
     <!-- Desktop nav -->
     <nav aria-label="주 메뉴">
       <ul>
-        <li><a href="#home">홈</a></li>
-        <li><a href="#problems">문제정의</a></li>
-        <li><a href="#solutions">솔루션</a></li>
-        <li><a href="#aeyes">Aeyes</a></li>
-        <li><a href="#business">비즈니스</a></li>
-        <li><a href="#team">팀</a></li>
-        <li><a href="#contact">연락처</a></li>
+        <li><a class="nav-link" href="#home">홈</a></li>
+        <li><a class="nav-link" href="#problems">문제정의</a></li>
+        <li><a class="nav-link" href="#solutions">솔루션</a></li>
+        <li><a class="nav-link" href="#aeyes">Aeyes</a></li>
+        <li><a class="nav-link" href="#business">비즈니스</a></li>
+        <li><a class="nav-link" href="#team">팀</a></li>
+        <li><a class="nav-link" href="#contact">연락처</a></li>
       </ul>
     </nav>
 
-    <!-- Mobile nav (JS 없이 작동) -->
+    <!-- Mobile nav -->
     <details class="nav">
       <summary aria-label="메뉴 열기">메뉴</summary>
       <ul>
-        <li><a href="#home">홈</a></li>
-        <li><a href="#problems">문제정의</a></li>
-        <li><a href="#solutions">솔루션</a></li>
-        <li><a href="#aeyes">Aeyes</a></li>
-        <li><a href="#business">비즈니스</a></li>
-        <li><a href="#team">Team</a></li>
-        <li><a href="#contact">연락처</a></li>
+        <li><a class="nav-link" href="#home">홈</a></li>
+        <li><a class="nav-link" href="#problems">문제정의</a></li>
+        <li><a class="nav-link" href="#solutions">솔루션</a></li>
+        <li><a class="nav-link" href="#aeyes">Aeyes</a></li>
+        <li><a class="nav-link" href="#business">비즈니스</a></li>
+        <li><a class="nav-link" href="#team">Team</a></li>
+        <li><a class="nav-link" href="#contact">연락처</a></li>
       </ul>
     </details>
   </div>
 </header>
 
-<!-- ✅ Hero -->
-<main id="home" class="hero hero-xl">
+<main id="home" class="hero">
   <div class="container wrap">
     <div>
-      <!-- 🔹 Hero 상단에 CI 로고 배치 -->
       <img class="hero-logo" src="assets/CI_HenryAX.png"
            alt="Henry AX · AI Retinal Diagnostics · Aeyes">
       <span class="kicker">Henry AX: Innovate Healthcare with Medical AI</span>
@@ -664,7 +659,7 @@
   </div>
 </footer>
 
-<!-- 상단 고정 & 해시 없는 스크롤 + 모바일 메뉴 스크롤 잠금 -->
+<!-- 스크롤/네온/모바일 메뉴 제어 -->
 <script>
   if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
 
@@ -675,26 +670,81 @@
     }
   });
 
-  document.querySelectorAll('a[href^="#"]').forEach(a => {
-    a.addEventListener('click', (e) => {
-      const id = a.getAttribute('href');
-      if (!id || id === '#') return;
-      const target = document.querySelector(id);
-      if (!target) return;
-      e.preventDefault();
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      const navDetails = document.querySelector('details.nav[open]');
-      if (navDetails) navDetails.open = false;
-      document.body.style.overflow = '';
-    });
-  });
+  document.addEventListener('DOMContentLoaded', () => {
+    const navLinks = document.querySelectorAll('nav a.nav-link');
+    const sectionIds = ['home','problems','solutions','aeyes','business','team','contact'];
+    const sections = sectionIds
+      .map(id => document.getElementById(id))
+      .filter(Boolean);
 
-  const detailsNav = document.querySelector('details.nav');
-  if (detailsNav) {
-    detailsNav.addEventListener('toggle', () => {
-      document.body.style.overflow = detailsNav.open ? 'hidden' : '';
+    function setActiveLink(sectionId){
+      navLinks.forEach(link=>{
+        const href = link.getAttribute('href') || '';
+        const id = href.startsWith('#') ? href.slice(1) : null;
+        if(id === sectionId){
+          link.classList.add('is-active');
+          link.setAttribute('aria-current','page');
+        }else{
+          link.classList.remove('is-active');
+          link.removeAttribute('aria-current');
+        }
+      });
+    }
+
+    // 🔥 앵커 클릭 -> 부드러운 스크롤 + 즉시 네온 변경
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', (e) => {
+        const href = a.getAttribute('href');
+        const id = href && href.startsWith('#') ? href.slice(1) : null;
+        if (!id) return;
+        const target = document.getElementById(id);
+        if (!target) return;
+
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+        // 클릭 즉시 네온 활성화
+        if (sectionIds.includes(id)) {
+          setActiveLink(id);
+        }
+
+        // 모바일 메뉴 닫기 + 스크롤 잠금 해제
+        const navDetails = document.querySelector('details.nav[open]');
+        if (navDetails) navDetails.open = false;
+        document.body.style.overflow = '';
+      });
     });
-  }
+
+    // 🔥 스크롤 위치에 따라 자동으로 네온 전환
+    if ('IntersectionObserver' in window){
+      const observer = new IntersectionObserver((entries)=>{
+        entries.forEach(entry=>{
+          if(entry.isIntersecting){
+            const id = entry.target.id;
+            if(sectionIds.includes(id)){
+              setActiveLink(id);
+            }
+          }
+        });
+      },{
+        threshold:0.55,
+        rootMargin: "-20% 0px -20% 0px"   // 섹션이 화면의 55% 정도 들어왔을 때 활성화
+      });
+
+      sections.forEach(sec => observer.observe(sec));
+    }
+
+    // 모바일 메뉴 열릴 때 바디 스크롤 잠금
+    const detailsNav = document.querySelector('details.nav');
+    if (detailsNav) {
+      detailsNav.addEventListener('toggle', () => {
+        document.body.style.overflow = detailsNav.open ? 'hidden' : '';
+      });
+    }
+
+    // 초기 상태: 홈에 네온
+    setActiveLink('home');
+  });
 </script>
 
 </body>
