@@ -5,13 +5,54 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>🚀 Woojin Park</title>
   <link rel="stylesheet" href="style.css">
+
+  <!-- ✅ 프로필 사진 + 자기소개 우측 배치용 추가 스타일 -->
+  <style>
+    .intro {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 2.5rem;
+    }
+
+    .intro-text {
+      flex: 1 1 260px;
+      min-width: 0;
+    }
+
+    .intro-photo {
+      flex: 0 0 230px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .intro-photo img {
+      width: 100%;
+      max-width: 260px;
+      border-radius: 18px;
+      object-fit: cover;
+      aspect-ratio: 3 / 4; /* 세로 비율 유지 */
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+    }
+
+    /* 모바일에서는 위/아래로 쌓이도록 */
+    @media (max-width: 768px) {
+      .intro {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .intro-photo {
+        align-self: center;
+      }
+    }
+  </style>
 </head>
 <body>
 
   <!-- 상단 네비게이션 -->
   <header>
     <div class="nav">
-        <div class="name"><a href="index.html">🚀 Woojin Park</a></div>
+      <div class="name"><a href="index.html">🚀 Woojin Park</a></div>
       <div class="menu">
         <a href="index.html" class="active">Main</a>
         <a href="projects.html" class="active">Projects</a>
@@ -23,41 +64,42 @@
     </div>
   </header>
 
-  
   <main class="container">
     <section class="intro">
-      <h1>Hi, I'm WooJin Park 🧑‍💻</h1>
-      <p class="desc">
-        I'm a graduate student in the Integrated M.S and Ph.D Program in Medical AI at Sungkyunkwan University, Graduate School of Medicine. 
-        I received a B.S. in Computer Science and Software Engineering, which shaped my foundation in algorithms, systems, and practical AI development. 
-        My research interests include <strong>Medical Image Analysis</strong>, <strong>Deep Learning</strong>, <strong>Self-Supervised Learning</strong>, and <strong>Federated Learning</strong>. 
-        I aim to develop reliable and clinically applicable AI systems for real-world healthcare environments.
-      </p>
-      <div class="icons">
-        📄 <a href="assets/CV_WooJinPark.pdf" target="_blank">CV</a>
-        ✉️ <a href="mailto:parkwj0602@gmail.com">Email</a>
-        💻 <a href="https://github.com/HenryPark62" target="_blank">GitHub</a>
-        🧬 <a href="HenryAX.html" target="_blank">Henry AX</a>
+      <!-- 🔹 왼쪽: 텍스트 -->
+      <div class="intro-text">
+        <h1>Hi, I'm WooJin Park 🧑‍💻</h1>
+        <p class="desc">
+          I'm a graduate student in the Integrated M.S and Ph.D Program at Sungkyunkwan University, Graduate School of Medicine. 
+          I received a B.S. in Computer Science and Software Engineering, which shaped my foundation in algorithms, systems, and practical AI development. 
+          My research interests include <strong>Medical Image Analysis</strong>, <strong>Deep Learning</strong>, <strong>Self-Supervised Learning</strong>, and <strong>Federated Learning</strong>. 
+          I aim to develop reliable and clinically applicable AI systems for real-world healthcare environments.
+        </p>
+        <div class="icons">
+          📄 <a href="assets/CV_WooJinPark.pdf" target="_blank">CV</a>
+          ✉️ <a href="mailto:parkwj0602@gmail.com">Email</a>
+          💻 <a href="https://github.com/HenryPark62" target="_blank">GitHub</a>
+          🧬 <a href="HenryAX.html" target="_blank">Henry AX</a>
+        </div>
+      </div>
+
+      <!-- 🔹 오른쪽: 프로필 사진 -->
+      <div class="intro-photo">
+        <!-- 👉 이미지 파일을 프로젝트 안에 넣고 경로만 맞춰 주면 됨 -->
+        <!-- 예: /assets/profile.jpeg 로 저장했다면 아래 src 그대로 사용 -->
+        <img src="assets/profile.JPG" alt="Woojin Park profile photo">
       </div>
     </section>
-
 
     <!-- 업데이트 -->
     <section class="updates">
       <h2>Recent Updates</h2>
       <ul>
-        
-        <li><span> Mar 2026</span> 🎓 Enrolled in the Integrated M.S and Ph.D Program in Medical AI, Sungkyunkwan University Graduate School of Medicine</li>
-
+        <li><span>Mar 2026</span> 🎓 Enrolled in the Integrated M.S and Ph.D Program in Medical AI, Sungkyunkwan University Graduate School of Medicine</li>
         <li><span>Jan 2026</span> 🔬 Joined Medical Big Data Lab., Sungkyunkwan University</li>
-
         <li><span>Aug 2025</span> 🔚 Completed Research Internship at Big Data-Driven AI Lab (BIGBASE), SeoulTech</li>
-
         <li><span>Jun 2025</span> 🔬 Joined Big Data-Driven AI Lab (BIGBASE), SeoulTech</li>
-        
         <li><span>May 2025</span> 🚀 Launched Github and this website.</li>
-
-
       </ul>
     </section>
   </main>
