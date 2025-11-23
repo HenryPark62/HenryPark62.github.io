@@ -10,15 +10,21 @@
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css"/>
 
+  <!-- 기본 스타일 (헤더/네비를 HenryAX 메인과 통일) -->
   <style>
     :root{
       --brand:#7c3aed; --brand2:#22d3ee;
       --bg:#0b0f1a; --bg2:#0e1326; --card:#0f1730;
       --text:#e9efff; --muted:#b6c6ee; --line:rgba(255,255,255,.1);
-      --radius:16px; --header-h:70px; --container-pad: clamp(16px, 4vw, 24px);
-      --r-1: clamp(8px, 1.2vw, 12px); --r-2: clamp(12px, 1.6vw, 16px);
-      --r-3: clamp(16px, 2.2vw, 24px); --r-4: clamp(20px, 3.0vw, 32px);
-      --r-5: clamp(28px, 4.2vw, 48px); --r-6: clamp(48px, 7.0vw, 96px);
+      --radius:16px;
+      --header-h:68px;  /* ✅ HenryAX와 동일 높이 */
+      --container-pad: clamp(16px, 4vw, 24px);
+      --r-1: clamp(8px, 1.2vw, 12px);
+      --r-2: clamp(12px, 1.6vw, 16px);
+      --r-3: clamp(16px, 2.2vw, 24px);
+      --r-4: clamp(20px, 3.0vw, 32px);
+      --r-5: clamp(28px, 4.2vw, 48px);
+      --r-6: clamp(48px, 7.0vw, 96px);
     }
 
     *{box-sizing:border-box;margin:0;padding:0}
@@ -39,9 +45,16 @@
       padding-left:max(var(--container-pad), calc(var(--container-pad) + env(safe-area-inset-left)));
       padding-right:max(var(--container-pad), calc(var(--container-pad) + env(safe-area-inset-right)));
     }
+
+    /* ✅ 헤더에서만 로고를 더 왼쪽으로 붙이기 (HenryAX와 동일) */
+    header .container{
+      padding-left: max(8px, calc(8px + env(safe-area-inset-left)));
+    }
+
     img,svg{max-width:100%;height:auto}
     :focus-visible{outline:2px solid var(--brand2); outline-offset:3px; border-radius:8px}
 
+    /* ✅ Header & Nav: HenryAX 메인과 같은 구조/레이아웃 */
     header{
       position:sticky;top:0;z-index:20;
       background:rgba(10,14,30,.65);
@@ -49,16 +62,50 @@
       border-bottom:1px solid var(--line);
       padding-top: env(safe-area-inset-top);
     }
-    .bar{height:var(--header-h);display:flex;align-items:center;justify-content:space-between;gap:var(--r-2)}
-    .logo{display:inline-flex;gap:.55rem;align-items:center;font-weight:900;font-size:clamp(1rem,2.2vw,1.12rem);text-decoration:none;color:#d9e5ff;min-height:48px}
-    .logo::before{content:'👁️';}
+    .bar{
+      height:var(--header-h);
+      display:flex;align-items:center;justify-content:space-between;gap:var(--r-2);
+    }
 
-    nav ul{display:flex;list-style:none;gap:var(--r-3)}
-    nav a{color:#c7d4ef;text-decoration:none;font-weight:600;position:relative;padding-block:10px;min-height:48px;display:flex;align-items:center}
+    .logo{
+      display:inline-flex;
+      gap:.55rem;
+      align-items:center;
+      text-decoration:none;
+      min-height:48px;
+    }
+    .logo img{
+      /* ✅ HenryAX 헤더와 동일한 로고 크기 */
+      height:clamp(72px, 6vw, 96px);
+      width:auto;
+      display:block;
+    }
+    .logo::before{
+      content:none;  /* 기존 이모지 제거 */
+    }
+
+    nav ul{
+      display:flex;
+      list-style:none;
+      gap:var(--r-3);
+    }
+    nav a{
+      color:#c7d4ef;
+      text-decoration:none;
+      font-weight:600;
+      position:relative;
+      padding-block:10px;
+      min-height:48px;
+      display:flex;
+      align-items:center;
+    }
     nav a:hover{color:#fff}
     nav a[aria-current="page"]{color:#fff}
     nav a[aria-current="page"]::after{
-      content:""; position:absolute; left:0; bottom:-6px; height:2px; width:100%;
+      content:"";
+      position:absolute;
+      left:0; bottom:-6px;
+      height:2px; width:100%;
       background:linear-gradient(90deg,var(--brand),var(--brand2));
     }
 
@@ -69,14 +116,29 @@
       min-height:44px; display:inline-flex; align-items:center;
       color:#cfe3ff; background:rgba(255,255,255,.05)
     }
-    details.nav[open] summary{border-bottom-left-radius:0;border-bottom-right-radius:0}
-    details.nav ul{
-      border:1px solid var(--line); border-top:0; border-bottom-left-radius:10px;border-bottom-right-radius:10px;
-      background:rgba(8,10,20,.97); padding:var(--r-1) 0; margin-top:-1px; display:block;
-      max-height:60vh; overflow:auto;
+    details.nav[open] summary{
+      border-bottom-left-radius:0;
+      border-bottom-right-radius:0;
     }
-    details.nav li a{display:block;padding:var(--r-2) var(--r-3);min-height:48px}
+    details.nav ul{
+      border:1px solid var(--line);
+      border-top:0;
+      border-bottom-left-radius:10px;
+      border-bottom-right-radius:10px;
+      background:rgba(8,10,20,.97);
+      padding:var(--r-1) 0;
+      margin-top:-1px;
+      display:block;
+      max-height:60vh;
+      overflow:auto;
+    }
+    details.nav li a{
+      display:block;
+      padding:var(--r-2) var(--r-3);
+      min-height:48px;
+    }
 
+    /* Hero & Sections (기존 Aeyes 스타일 유지) */
     .hero{
       background:
         linear-gradient(180deg, rgba(34,211,238,.06), transparent 40%),
@@ -166,11 +228,90 @@
       .grid-3{grid-template-columns:repeat(2,minmax(0,1fr))}
       .grid-4{grid-template-columns:repeat(2,minmax(0,1fr))}
     }
-    @media (max-width:720px){ nav ul{display:none} details.nav{display:block} .bar{gap:var(--r-1)} }
-    @media (max-width:560px){ form.block > div[style*="grid-template-columns"]{ grid-template-columns:1fr !important; } }
-    @media (max-width:520px){ .grid-3,.grid-4{grid-template-columns:1fr} .cta{gap:var(--r-1)} }
+    @media (max-width:720px){
+      nav ul{display:none}
+      details.nav{display:block}
+      .bar{gap:var(--r-1)}
+    }
+    @media (max-width:560px){
+      form.block > div[style*="grid-template-columns"]{
+        grid-template-columns:1fr !important;
+      }
+    }
+    @media (max-width:520px){
+      .grid-3,.grid-4{grid-template-columns:1fr}
+      .cta{gap:var(--r-1)}
+    }
     @media (prefers-reduced-motion: reduce){
-      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
+
+  <!-- 🔥 HenryAX 메인과 동일 컨셉: 전역 그라데이션 + 그리드 + 블록 배경 제거 -->
+  <style>
+    body {
+      background-color:#050712;
+      background-image:
+        radial-gradient(120% 150% at 0% 0%, #151e3b 0%, #050712 45%, #02030a 100%),
+        radial-gradient(90% 130% at 100% 0%, rgba(124,58,237,0.38), transparent 60%),
+        radial-gradient(100% 140% at 10% 100%, rgba(34,211,238,0.32), transparent 55%);
+      background-attachment: fixed;
+      background-size: cover;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+      background-image:
+        linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+      background-size: 42px 42px;
+      opacity: 0.15;
+      mix-blend-mode: soft-light;
+    }
+
+    .hero {
+      position: relative;
+      background: transparent;
+      border-bottom: 1px solid var(--line);
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: -200px -100px 35%;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(34,211,238,0.42), transparent 60%),
+        radial-gradient(circle at 80% 0%, rgba(124,58,237,0.4), transparent 60%);
+      filter: blur(32px);
+      opacity: 0.95;
+      z-index: -1;
+      pointer-events:none;
+    }
+
+    section {
+      background: transparent !important;
+    }
+    section.alt {
+      background: transparent !important;
+    }
+
+    .band {
+      background: transparent !important;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    footer {
+      background: transparent !important;
+      border-top: 1px solid var(--line);
     }
   </style>
 </head>
@@ -178,7 +319,10 @@
 
 <header>
   <div class="container bar">
-    <a class="logo" href="HenryAX.html" aria-label="Henry AX 메인으로">Henry AX</a>
+    <!-- ✅ CI 이미지 로고 (HenryAX 메인과 동일) -->
+    <a class="logo" href="HenryAX.html" aria-label="Henry AX 메인으로">
+      <img src="assets/CI_HenryAX.png" alt="Henry AX · AI Retinal Diagnostics · Aeyes">
+    </a>
 
     <nav aria-label="주 메뉴">
       <ul>
@@ -216,7 +360,6 @@
     </div>
 
     <figure class="mock" aria-label="Aeyes 시각화 (화이트 키잉)">
-      <!-- 원본 먼저 노출(안전). 처리 성공 시 JS가 숨김 -->
       <img id="aeyesImg" src="assets/aeyes.png" alt="Aeyes: DR Severity 시각화" />
       <canvas id="aeyesCanvas" width="1600" height="1200" aria-label="Aeyes processed canvas" style="display:none;"></canvas>
       <noscript><img src="assets/aeyes.png" alt="Aeyes: DR Severity 시각화 (noscript)"></noscript>
@@ -400,18 +543,16 @@
   }
 </script>
 
-<!-- Canvas 화이트 키잉 (흰 배경 제거 + 밝기 유지, 실패 시 자동 폴백) -->
+<!-- Canvas 화이트 키잉 -->
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   const img = document.getElementById('aeyesImg');
   const canvas = document.getElementById('aeyesCanvas');
   if (!img || !canvas) return;
 
-  // === 튜닝 파라미터 ===
-  const WHITE_THRESHOLD = 245; // 0~255: 높일수록 더 많은 밝은 영역이 제거
-  const FEATHER = 6;           // 경계 부드럽게(px)
-  const MIN_SAT = 15;          // 채도 임계. 0이면 채도 조건 미적용
-  // 모바일 메모리 보호용 DPR 상한
+  const WHITE_THRESHOLD = 245;
+  const FEATHER = 6;
+  const MIN_SAT = 15;
   const DPR_LIMIT = 2;
 
   function render() {
@@ -423,32 +564,26 @@ document.addEventListener('DOMContentLoaded', () => {
       const h = img.naturalHeight || img.height;
       if (!w || !h) return;
 
-      // 내부 픽셀 크기 기준을 고정해서 draw / read / write 모두 일치
       const cw = Math.round(w * dpr);
       const ch = Math.round(h * dpr);
       canvas.width = cw;
       canvas.height = ch;
 
-      // CSS 크기(레이아웃)는 반응형
       canvas.style.width = '100%';
       canvas.style.height = 'auto';
 
-      // 2D 컨텍스트
       const ctx = canvas.getContext('2d', { willReadFrequently: true }) || canvas.getContext('2d');
       if (!ctx) return;
 
       ctx.clearRect(0, 0, cw, ch);
       ctx.imageSmoothingEnabled = true;
 
-      // 변환 없이 고해상도로 직접 그림
       ctx.drawImage(img, 0, 0, cw, ch);
 
-      // 픽셀 접근
       let imageData;
       try {
         imageData = ctx.getImageData(0, 0, cw, ch);
       } catch (e) {
-        // CORS 등 보안 문제 → 폴백
         console.warn('getImageData blocked (likely CORS). Keeping original image.', e);
         canvas.style.display = 'none';
         img.style.display = '';
@@ -457,7 +592,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const data = imageData.data;
 
-      // 1) 거의 흰 + 저채도 픽셀 투명화
       for (let i = 0; i < data.length; i += 4) {
         const r = data[i], g = data[i+1], b = data[i+2];
         const maxc = Math.max(r, g, b);
@@ -465,11 +599,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const sat  = maxc - minc;
 
         if (r >= WHITE_THRESHOLD && g >= WHITE_THRESHOLD && b >= WHITE_THRESHOLD && sat <= MIN_SAT) {
-          data[i+3] = 0; // alpha = 0
+          data[i+3] = 0;
         }
       }
 
-      // 2) 경계 페더링 (간단 확산)
       if (FEATHER > 0) {
         const alpha = new Uint8ClampedArray(cw * ch);
         for (let p = 0, q = 3; p < alpha.length; p++, q += 4) alpha[p] = data[q];
@@ -489,10 +622,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
 
-      // 3) 결과 반영
       ctx.putImageData(imageData, 0, 0);
 
-      // 성공 → 캔버스 노출, 원본 숨김
       canvas.style.display = '';
       img.style.display = 'none';
     } catch (err) {
@@ -502,7 +633,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // 이미지 준비 상태에 따라 실행
   if (img.complete && img.naturalWidth) {
     render();
   } else {
@@ -514,7 +644,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { once:true });
   }
 
-  // 리사이즈 시 재렌더 (처리된 상태에서만)
   let t;
   window.addEventListener('resize', () => {
     clearTimeout(t);

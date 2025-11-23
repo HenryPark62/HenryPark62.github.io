@@ -11,10 +11,12 @@
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css"/>
 
+  <!-- 기본 스타일 -->
   <style>
     :root{
-      /* Brand & Colors */
-      --brand:#1947e5; --brand2:#00c2ff;
+      /* Brand & Colors (로고 팔레트에 맞게 약간 조정해도 좋음) */
+      --brand:#1947e5; 
+      --brand2:#00c2ff;
       --bg:#0a1022; --bg2:#0d1530; --card:#0f1a3a;
       --text:#e7eefc; --muted:#b8c9ee; --line:rgba(255,255,255,.08);
 
@@ -55,6 +57,12 @@
       padding-left: max(var(--container-pad), calc(var(--container-pad) + env(safe-area-inset-left)));
       padding-right:max(var(--container-pad), calc(var(--container-pad) + env(safe-area-inset-right)));
     }
+
+    /* 🔹 헤더 영역만 로고를 더 왼쪽으로 붙이기 */
+    header .container{
+      padding-left: max(8px, calc(8px + env(safe-area-inset-left)));
+    }
+
     img,svg{max-width:100%;height:auto}
     :focus-visible{outline:2px solid #00c2ff; outline-offset:3px; border-radius:6px}
 
@@ -65,9 +73,26 @@
       /* ▶ 상단 안전영역 */
       padding-top: env(safe-area-inset-top);
     }
-    .bar{height:var(--header-h);display:flex;align-items:center;justify-content:space-between;gap:var(--r-2)}
-    .logo{display:inline-flex;gap:.55rem;align-items:center;font-weight:800;font-size:clamp(1rem,2.2vw,1.1rem);text-decoration:none;color:#cfe3ff; min-height:48px; align-items:center}
-    .logo::before{content:'🧬';}
+    .bar{
+      height:var(--header-h);
+      display:flex;align-items:center;justify-content:space-between;gap:var(--r-2)
+    }
+
+    /* 로고: CI 이미지 사용 */
+    .logo{
+      display:inline-flex;
+      gap:.55rem;
+      align-items:center;
+      text-decoration:none;
+      min-height:48px;
+    }
+    .logo img{
+      /* 🔺 헤더 CI 로고 크게 */
+      height:clamp(72px, 6vw, 96px);
+      width:auto;
+      display:block;
+    }
+    .logo::before{content:none;} /* 이모지 제거 */
 
     /* Desktop nav */
     nav ul{display:flex;list-style:none;gap:var(--r-3)}
@@ -117,10 +142,23 @@
       background:rgba(0,194,255,.12);color:#9bdcff;font-weight:800;
       font-size:clamp(.78rem,1.4vw,.86rem); border:1px solid rgba(0,194,255,.25)
     }
-    h1{margin-top:var(--r-2);font-size:clamp(2rem, 4.6vw, 3.2rem);line-height:1.12;letter-spacing:-.02em;font-weight:800}
-    .grad{-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;background-image:linear-gradient(135deg,#d2e3ff 0%,#7fccff 60%,#6fb3ff 100%)}
-    .hero p{margin:var(--r-2) 0 var(--r-3);color:#adc0e6;font-size:clamp(1rem,1.6vw,1.15rem)}
-    .cta{display:flex;gap:var(--r-2);flex-wrap:wrap;justify-content:center}
+    h1{
+      margin-top:var(--r-2);
+      font-size:clamp(2rem, 4.6vw, 3.2rem);
+      line-height:1.12;letter-spacing:-.02em;font-weight:800
+    }
+    .grad{
+      -webkit-background-clip:text;background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-image:linear-gradient(135deg,#d2e3ff 0%,#7fccff 60%,#6fb3ff 100%)
+    }
+    .hero p{
+      margin:var(--r-2) 0 var(--r-3);
+      color:#adc0e6;font-size:clamp(1rem,1.6vw,1.15rem)
+    }
+    .cta{
+      display:flex;gap:var(--r-2);flex-wrap:wrap;justify-content:center
+    }
 
     .btn{
       appearance:none;border:0;border-radius:var(--radius);
@@ -131,9 +169,15 @@
       transition:transform .15s, box-shadow .15s;will-change:transform;
       max-width:100%; /* ▶ 초소형에서 넘침 방지 */
     }
-    .btn.primary{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#05122c;box-shadow:0 8px 18px rgba(0,194,255,.25)}
+    .btn.primary{
+      background:linear-gradient(135deg,var(--brand),var(--brand2));
+      color:#05122c;box-shadow:0 8px 18px rgba(0,194,255,.25)
+    }
     .btn.primary:hover{transform:translateY(-2px)}
-    .btn.ghost{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);color:#e7eefc}
+    .btn.ghost{
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.14);color:#e7eefc
+    }
 
     /* Sections */
     section{
@@ -142,10 +186,13 @@
       scroll-margin-top:calc(var(--header-h) + var(--r-2));
       overflow:hidden; /* ▶ 배경 넘침 방지 */
     }
-    section.alt{background:linear-gradient(180deg,var(--bg2) 0%, var(--bg) 100%)}
+    section.alt{
+      background:linear-gradient(180deg,var(--bg2) 0%, var(--bg) 100%)
+    }
 
     .title{
-      font-size:clamp(1.55rem, 3vw, 2.05rem);font-weight:800;text-align:center;color:#eaf2ff;
+      font-size:clamp(1.55rem, 3vw, 2.05rem);
+      font-weight:800;text-align:center;color:#eaf2ff;
       margin-bottom:var(--r-2);
     }
     .subtitle{
@@ -153,17 +200,33 @@
       font-size:clamp(.98rem,1.6vw,1.06rem);
     }
 
-    .grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--r-3)}
-    .grid-4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--r-3)}
+    .grid-3{
+      display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--r-3)
+    }
+    .grid-4{
+      display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--r-3)
+    }
 
     .card{
       background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.02));
       border:1px solid var(--line); border-radius:18px; padding:var(--r-3)
     }
-    .card h3{font-size:clamp(1.02rem,1.8vw,1.12rem);margin:var(--r-1) 0;color:#f1f6ff}
+    .card h3{
+      font-size:clamp(1.02rem,1.8vw,1.12rem);
+      margin:var(--r-1) 0;color:#f1f6ff
+    }
     .card p{color:#c6d4f0; font-size:clamp(.95rem,1.5vw,1rem)}
-    .pill{display:inline-block;border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:.35rem .75rem;font-weight:700;color:#cfe3ff;background:rgba(255,255,255,.05);font-size:clamp(.75rem,1.4vw,.85rem)}
-    .badge{display:inline-block;padding:.35rem .7rem;border-radius:999px;font-size:clamp(.72rem,1.3vw,.82rem);font-weight:800;background:linear-gradient(135deg,var(--brand),var(--brand2));color:#06122e}
+    .pill{
+      display:inline-block;border:1px solid rgba(255,255,255,.18);
+      border-radius:999px;padding:.35rem .75rem;font-weight:700;
+      color:#cfe3ff;background:rgba(255,255,255,.05);
+      font-size:clamp(.75rem,1.4vw,.85rem)
+    }
+    .badge{
+      display:inline-block;padding:.35rem .7rem;border-radius:999px;
+      font-size:clamp(.72rem,1.3vw,.82rem);font-weight:800;
+      background:linear-gradient(135deg,var(--brand),var(--brand2));color:#06122e
+    }
 
     .band{
       padding-block:var(--r-6);
@@ -173,14 +236,24 @@
       border-top:1px solid var(--line);border-bottom:1px solid var(--line);
       overflow:hidden; /* ▶ 넘침 방지 */
     }
-    .mini{padding:var(--r-3);border-radius:16px;background:rgba(255,255,255,.035);border:1px solid var(--line)}
-    .mini h3{font-size:clamp(1rem,1.7vw,1.08rem);margin-bottom:var(--r-1)}
+    .mini{
+      padding:var(--r-3);border-radius:16px;
+      background:rgba(255,255,255,.035);border:1px solid var(--line)
+    }
+    .mini h3{
+      font-size:clamp(1rem,1.7vw,1.08rem);
+      margin-bottom:var(--r-1)
+    }
     .mini p{color:#b7c6e6;font-size:clamp(.93rem,1.5vw,1rem)}
 
     .center{text-align:center;margin-top:var(--r-4)}
 
     /* Forms */
-    form.card label{display:block;margin-bottom:var(--r-1);font-weight:700;color:#d8e6ff;font-size:clamp(.9rem,1.4vw,1rem)}
+    form.card label{
+      display:block;margin-bottom:var(--r-1);
+      font-weight:700;color:#d8e6ff;
+      font-size:clamp(.9rem,1.4vw,1rem)
+    }
     input, select, textarea{
       width:100%; padding:var(--r-2);
       border:1px solid rgba(255,255,255,.16); border-radius:var(--radius);
@@ -202,9 +275,18 @@
 
     /* ✅ HERO XL (텍스트/버튼 확대 전용) */
     .hero.hero-xl .wrap{min-height:clamp(520px, 92svh, 860px);}
-    .hero.hero-xl .kicker{font-size:clamp(.9rem, 1.8vw, 1.05rem);padding:.55rem 1rem;}
-    .hero.hero-xl h1{font-size:clamp(2.4rem, 6vw, 3.9rem);line-height:1.08;margin-top:var(--r-2);}
-    .hero.hero-xl p{font-size:clamp(1.08rem, 2vw, 1.3rem);margin:var(--r-2) 0 var(--r-3);color:#adc0e6;}
+    .hero.hero-xl .kicker{
+      font-size:clamp(.9rem, 1.8vw, 1.05rem);
+      padding:.55rem 1rem;
+    }
+    .hero.hero-xl h1{
+      font-size:clamp(2.4rem, 6vw, 3.9rem);
+      line-height:1.08;margin-top:var(--r-2);
+    }
+    .hero.hero-xl p{
+      font-size:clamp(1.08rem, 2vw, 1.3rem);
+      margin:var(--r-2) 0 var(--r-3);color:#adc0e6;
+    }
     .hero.hero-xl .btn{
       font-size:clamp(1.12rem, 2.2vw, 1.32rem);
       padding:calc(var(--r-2) + 6px) var(--r-4);
@@ -214,9 +296,27 @@
     }
 
     /* === 카드/미니 공통 수직 간격 정렬 === */
-    .card .badge, .mini .badge, .card .pill, .mini .pill { display:inline-block; margin-bottom: var(--r-1); }
+    .card .badge, .mini .badge, .card .pill, .mini .pill {
+      display:inline-block; margin-bottom: var(--r-1);
+    }
     .card h3, .mini h3 { margin: 0 0 var(--r-1); }
     .card p, .mini p { margin: 0; }
+
+    /* 🔹 Hero 안에서 쓰는 CI 로고 (중앙) */
+    .hero-logo{
+      /* 중앙 CI 더 크게 */
+      max-width:500px;
+      width:80%;
+      height:auto;
+      margin:0 auto var(--r-2);
+      display:block;
+    }
+    @media (min-width:800px){
+      .hero-logo{
+        max-width:500px;
+        margin-bottom:var(--r-3);
+      }
+    }
 
     /* Responsive */
     @media (max-width:1120px){
@@ -233,13 +333,19 @@
     }
     /* ▶ 폼 2열 → 1열 전환 임계값 */
     @media (max-width:560px){
-      form.card > div[style*="grid-template-columns"]{ grid-template-columns:1fr !important; }
+      form.card > div[style*="grid-template-columns"]{
+        grid-template-columns:1fr !important;
+      }
     }
     @media (max-width:520px){
       .grid-3,.grid-4{grid-template-columns:1fr}
       .cta{gap:var(--r-1)}
-      .hero.hero-xl h1{font-size:clamp(2.05rem,8vw,2.6rem);}
-      .hero.hero-xl p{font-size:clamp(1rem,4.2vw,1.15rem);}
+      .hero.hero-xl h1{
+        font-size:clamp(2.05rem,8vw,2.6rem);
+      }
+      .hero.hero-xl p{
+        font-size:clamp(1rem,4.2vw,1.15rem);
+      }
       .hero.hero-xl .btn{
         font-size:clamp(1.02rem,4.4vw,1.12rem);
         min-height:52px;
@@ -254,7 +360,80 @@
     }
 
     @media (prefers-reduced-motion: reduce){
-      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
+
+  <!-- 🔥 전역 첨단 그라데이션 + 그리드 + 섹션 배경 통합 오버라이드 -->
+  <style>
+    /* 전체 페이지 공통 배경 */
+    body {
+      background-color:#050712;
+      background-image:
+        radial-gradient(120% 150% at 0% 0%, #151e3b 0%, #050712 45%, #02030a 100%),
+        radial-gradient(90% 130% at 100% 0%, rgba(25,71,229,0.4), transparent 60%),
+        radial-gradient(100% 140% at 10% 100%, rgba(0,194,255,0.3), transparent 55%);
+      background-attachment: fixed;
+      background-size: cover;
+      position: relative;
+    }
+
+    /* 얇은 산업형 그리드 */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+      background-image:
+        linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+      background-size: 42px 42px;
+      opacity: 0.15;
+      mix-blend-mode: soft-light;
+    }
+
+    /* Hero는 전역 배경 위에서 글로우만 */
+    .hero {
+      position: relative;
+      background: transparent;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: -180px -80px 40%;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(0,194,255,0.42), transparent 60%),
+        radial-gradient(circle at 80% 0%, rgba(25,71,229,0.38), transparent 60%);
+      filter: blur(28px);
+      opacity: 1;
+      z-index: -1;
+      pointer-events:none;
+    }
+
+    /* 섹션 배경을 모두 투명화 */
+    section {
+      background: transparent !important;
+    }
+    section.alt {
+      background: transparent !important;
+    }
+
+    /* band 섹션도 투명 + 경계선만 */
+    .band {
+      background: transparent !important;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    /* footer도 전역 배경 위에 얹히도록 */
+    footer {
+      background: transparent !important;
+      border-top: 1px solid var(--line);
     }
   </style>
 </head>
@@ -262,7 +441,10 @@
 
 <header>
   <div class="container bar">
-    <a class="logo" href="#home" aria-label="Henry AX 홈">Henry AX</a>
+    <!-- 🔹 헤더에 CI 로고 적용 -->
+    <a class="logo" href="#home" aria-label="Henry AX 홈">
+      <img src="assets/CI_HenryAX.png" alt="Henry AX · AI Retinal Diagnostics · Aeyes">
+    </a>
 
     <!-- Desktop nav -->
     <nav aria-label="주 메뉴">
@@ -297,6 +479,9 @@
 <main id="home" class="hero hero-xl">
   <div class="container wrap">
     <div>
+      <!-- 🔹 Hero 상단에 CI 로고 배치 -->
+      <img class="hero-logo" src="assets/CI_HenryAX.png"
+           alt="Henry AX · AI Retinal Diagnostics · Aeyes">
       <span class="kicker">Henry AX: Innovate Healthcare with Medical AI</span>
       <h1>의료 AI의 <span class="grad">임상 가치</span>를 높이는<br/>데이터·진단·예측 플랫폼</h1>
       <p>반자동 라벨링, 합성 데이터, 시계열 예측과 안질환 진단 솔루션 <b>Aeyes</b>로 효율적인 병원 워크플로우를 지향합니다.</p>
@@ -337,9 +522,21 @@
     <h2 class="title">핵심 솔루션</h2>
     <p class="subtitle">데이터 파이프라인부터 임상 애플리케이션까지, 하나의 흐름으로.</p>
     <div class="grid-3">
-      <article class="card"><span class="badge">Pseudo-Labeling</span><h3>AI 반자동 라벨링</h3><p>소량 GT로 대량 데이터 가상 라벨 생성·검수 루프를 자동화합니다.</p></article>
-      <article class="card"><span class="badge">Synthetic Data</span><h3>의료 합성 데이터</h3><p>희귀/불균형 케이스 보강으로 학습 안정성·성능을 향상합니다.</p></article>
-      <article class="card"><span class="badge">Time-Series</span><h3>시계열 예측</h3><p>검진/생체 신호 기반 질환 발병·악화 위험을 추정합니다.</p></article>
+      <article class="card">
+        <span class="badge">Pseudo-Labeling</span>
+        <h3>AI 반자동 라벨링</h3>
+        <p>소량 GT로 대량 데이터 가상 라벨 생성·검수 루프를 자동화합니다.</p>
+      </article>
+      <article class="card">
+        <span class="badge">Synthetic Data</span>
+        <h3>의료 합성 데이터</h3>
+        <p>희귀/불균형 케이스 보강으로 학습 안정성·성능을 향상합니다.</p>
+      </article>
+      <article class="card">
+        <span class="badge">Time-Series</span>
+        <h3>시계열 예측</h3>
+        <p>검진/생체 신호 기반 질환 발병·악화 위험을 추정합니다.</p>
+      </article>
     </div>
   </div>
 </section>
@@ -349,10 +546,26 @@
     <h2 class="title">Aeyes: 안질환 AI 진단·예측</h2>
     <p class="subtitle">당뇨망막병증, 백내장, 녹내장 등 주요 안질환에 대한 멀티태스크 분석과 워크플로우 연동.</p>
     <div class="grid-4" style="margin-top:var(--r-3)">
-      <div class="mini"><span class="badge">Diabetic Retinopathy</span><h3>당뇨망막병증</h3><p>12가지 망막 소견 기반 등급화, 병변 히트맵 제공.</p></div>
-      <div class="mini"><span class="badge">Cataract</span><h3>백내장</h3><p>혼탁도 정량화 및 수술 권고 보조 지표 산출.</p></div>
-      <div class="mini"><span class="badge">Glaucoma</span><h3>녹내장</h3><p>RNFL/VD 지표 추정과 진행 위험 추정.</p></div>
-      <div class="mini"><span class="badge">Integration</span><h3>EMR/PACS 연동</h3><p>DICOM, HL7® FHIR® 연계를 통해 리포트/맵 자동 첨부.</p></div>
+      <div class="mini">
+        <span class="badge">Diabetic Retinopathy</span>
+        <h3>당뇨망막병증</h3>
+        <p>12가지 망막 소견 기반 등급화, 병변 히트맵 제공.</p>
+      </div>
+      <div class="mini">
+        <span class="badge">Cataract</span>
+        <h3>백내장</h3>
+        <p>혼탁도 정량화 및 수술 권고 보조 지표 산출.</p>
+      </div>
+      <div class="mini">
+        <span class="badge">Glaucoma</span>
+        <h3>녹내장</h3>
+        <p>RNFL/VD 지표 추정과 진행 위험 추정.</p>
+      </div>
+      <div class="mini">
+        <span class="badge">Integration</span>
+        <h3>EMR/PACS 연동</h3>
+        <p>DICOM, HL7® FHIR® 연계를 통해 리포트/맵 자동 첨부.</p>
+      </div>
     </div>
     <div class="center">
       <a class="btn primary" href="Aeyes.html">Aeyes 자세히 보기</a>
@@ -392,15 +605,27 @@
     <p class="subtitle">프로덕트 데모, PoC, 파트너십 상담을 요청하세요.</p>
     <form class="card" style="max-width:720px;margin:0 auto">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--r-2)">
-        <div><label for="name">이름*</label><input id="name" required name="name"></div>
-        <div><label for="email">이메일*</label><input id="email" required type="email" name="email"></div>
+        <div>
+          <label for="name">이름*</label>
+          <input id="name" required name="name">
+        </div>
+        <div>
+          <label for="email">이메일*</label>
+          <input id="email" required type="email" name="email">
+        </div>
       </div>
-      <div style="margin-top:var(--r-2)"><label for="topic">관심 분야</label>
+      <div style="margin-top:var(--r-2)">
+        <label for="topic">관심 분야</label>
         <select id="topic" name="topic">
-          <option value="">선택</option><option>Aeyes</option><option>반자동 라벨링</option><option>합성 데이터</option><option>시계열 예측</option>
+          <option value="">선택</option>
+          <option>Aeyes</option>
+          <option>반자동 라벨링</option>
+          <option>합성 데이터</option>
+          <option>시계열 예측</option>
         </select>
       </div>
-      <div style="margin-top:var(--r-2)"><label for="msg">메시지*</label>
+      <div style="margin-top:var(--r-2)">
+        <label for="msg">메시지*</label>
         <textarea id="msg" required name="msg" rows="4"></textarea>
       </div>
       <div style="display:flex;justify-content:flex-end;margin-top:var(--r-3)">
@@ -416,16 +641,19 @@
       <strong style="color:#fff">Henry AX</strong>
       <p style="margin-top:var(--r-1);color:#a5b5db">의료 AI 데이터·진단·예측 플랫폼</p>
     </div>
-    <div><strong style="color:#fff">제품</strong>
+    <div>
+      <strong style="color:#fff">제품</strong>
       <p><a href="Aeyes.html">Aeyes(안질환)</a></p>
       <p><a href="#solutions">반자동 라벨링</a></p>
       <p><a href="#solutions">합성 데이터</a></p>
     </div>
-    <div><strong style="color:#fff">리소스</strong>
+    <div>
+      <strong style="color:#fff">리소스</strong>
       <p><a href="#business">도입 가이드</a></p>
       <p><a href="#contact">데모 요청</a></p>
     </div>
-    <div><strong style="color:#fff">연락처</strong>
+    <div>
+      <strong style="color:#fff">연락처</strong>
       <p>contact@henryax.com</p>
       <p>02-1234-5678</p>
       <p>서울 강남구 테헤란로 123</p>
@@ -439,12 +667,14 @@
 <!-- 상단 고정 & 해시 없는 스크롤 + 모바일 메뉴 스크롤 잠금 -->
 <script>
   if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
+
   window.addEventListener('load', () => {
     if (location.hash) {
       history.replaceState(null, '', location.pathname + location.search);
       window.scrollTo(0, 0);
     }
   });
+
   document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', (e) => {
       const id = a.getAttribute('href');
