@@ -354,11 +354,45 @@
       color: inherit;
     }
 
+    /* 공통 버튼 스타일은 그대로 두고, .btn-primary만 이렇게 수정 */
     .btn-primary {
-      background: linear-gradient(135deg, #4f46e5, #22d3ee);
+      border-radius: 999px;
+      padding: 11px 18px;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      border: 1px solid transparent;
+
+      /* 실제 배경은 ::before가 담당 */
+      background: transparent;
       color: #f9fafb;
-      box-shadow: 0 16px 40px rgba(37, 99, 235, 0.65);
       font-weight: 500;
+
+      box-shadow: 0 16px 40px rgba(37, 99, 235, 0.65);
+
+      /* 그라디언트 마스킹용 */
+      position: relative;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .btn-primary::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: linear-gradient(135deg, #4f46e5, #22d3ee);
+
+      /* 텍스트보다 뒤로 보내기 */
+      z-index: -1;
+    }
+
+    /* 버튼 안의 텍스트/아이콘은 위에 오도록 */
+    .btn-primary > * {
+      position: relative;
+      z-index: 1;
     }
 
     .btn-primary:hover {
@@ -565,7 +599,8 @@
 
     /* ===== 공통 섹션 헤더 ===== */
     .section {
-      margin-top: 40px;
+      margin-top: 50px;
+      padding-top: 4px; 
     }
 
     .section-header {
@@ -577,19 +612,19 @@
     }
 
     .section-title {
-      font-size: 1.05rem;
+      font-size: 1.65rem;
       font-weight: 600;
       letter-spacing: -0.01em;
     }
 
     .section-subtitle {
-      font-size: 0.86rem;
+      font-size: 1.10rem;
       color: var(--text-muted);
-      max-width: 380px;
+      max-width: none; /* 380px; */
     }
 
     .section-link {
-      font-size: 0.78rem;
+      font-size: 0.68rem;
       color: var(--text-muted);
       display: inline-flex;
       align-items: center;
@@ -713,9 +748,11 @@
       border-radius: 22px;
       padding: 18px 18px 16px;
       border: 1px solid rgba(148,163,184,0.5);
-      background: radial-gradient(circle at 0 0, rgba(56,189,248,0.45), transparent 60%),
-                  radial-gradient(circle at 100% 100%, rgba(236,72,153,0.4), transparent 60%),
-                  rgba(15,23,42,0.98);
+      /* 🔧 그라디언트 위치/강도 조정 */
+      background:
+        radial-gradient(circle at 20% 30%, rgba(56,189,248,0.30), transparent 65%),
+        radial-gradient(circle at 110% 120%, rgba(236,72,153,0.35), transparent 65%),
+        rgba(15,23,42,0.98);
       box-shadow: var(--shadow-soft);
       display: flex;
       flex-wrap: wrap;
@@ -723,6 +760,10 @@
       align-items: center;
       justify-content: space-between;
       font-size: 0.88rem;
+
+      /* 삐져나오는 부분 잘라내기 */
+      overflow: hidden;
+      position: relative;
     }
 
     .section-cta-text {
@@ -777,7 +818,7 @@
 
     /* 히어로 느낌 강조 문구 → Hero 메인 타이틀과 동일한 크기 */
     .xai-lead {
-      font-size: clamp(2.2rem, 4vw, 3rem);
+      font-size: 2.2rem; /*clamp(2.2rem, 4vw, 3rem);*/ 
       font-weight: 600;
       line-height: 1.15;
       margin-bottom: 14px;
@@ -1075,12 +1116,11 @@
         <div>
           <h2 class="section-title">Henry AX 플랫폼</h2>
           <p class="section-subtitle">
-            의료 AI의 임상 가치를 높이기 위해, 데이터 라벨링·합성·예측을 하나의
-            파이프라인으로 통합한 Medical AI 플랫폼입니다.
+            의료 AI의 임상 가치를 높이기 위해, 데이터 라벨링·합성·예측을 하나의 파이프라인으로 통합한 Medical AI 플랫폼입니다.
           </p>
         </div>
         <a href="HenryAX.html" class="section-link">
-          Henry AX 상세 페이지로 이동
+          Henry AX 상세 페이지
           <span class="arrow">↗</span>
         </a>
       </div>
@@ -1090,8 +1130,7 @@
           <div class="card-tag">01 · Pseudo-Labeling</div>
           <h3 class="card-title">AI 반자동 라벨링 루프</h3>
           <p class="card-desc">
-            소량의 GT(전문의 라벨)로 대량 데이터에 가상 라벨을 생성하고, 검수 루프를
-            통해 점진적으로 품질을 끌어올리는 반자동 라벨링 파이프라인을 제공합니다.
+            소량의 GT(전문의 라벨)로 대량 데이터에 가상 라벨을 생성하고, 검수 루프를 통해 점진적으로 품질을 끌어올리는 반자동 라벨링 파이프라인을 제공합니다.
           </p>
           <div class="card-meta">
             <span class="card-pill">전문의 라벨링 부담 감소</span>
@@ -1103,8 +1142,7 @@
           <div class="card-tag">02 · Synthetic Data</div>
           <h3 class="card-title">의료 합성 데이터 생성</h3>
           <p class="card-desc">
-            희귀·불균형 케이스를 중심으로 합성/증강 데이터를 생성하여, 실제 임상에서
-            자주 보기 어려운 패턴까지 모델이 학습할 수 있도록 지원합니다.
+            희귀·불균형 케이스를 중심으로 합성/증강 데이터를 생성하여, 실제 임상에서 자주 보기 어려운 패턴까지 모델이 학습할 수 있도록 지원합니다.
           </p>
           <div class="card-meta">
             <span class="card-pill">데이터 희소성 완화</span>
@@ -1116,8 +1154,7 @@
           <div class="card-tag">03 · Time-Series Prediction</div>
           <h3 class="card-title">시계열 질환 예측</h3>
           <p class="card-desc">
-            검진 기록·생체 신호·영상 추세를 통합 분석해, 질환 발병·악화 위험을
-            사전에 탐지하고 follow-up 전략 수립에 도움을 줍니다.
+            검진 기록·생체 신호·영상 추세를 통합 분석해, 질환 발병·악화 위험을 사전에 탐지하고 follow-up 전략 수립에 도움을 줍니다.
           </p>
           <div class="card-meta">
             <span class="card-pill">조기 경고 및 모니터링</span>
@@ -1133,12 +1170,11 @@
         <div>
           <h2 class="section-title">Aeyes: 안질환 AI 진단·예측</h2>
           <p class="section-subtitle">
-            안저·전안부 영상을 기반으로 DR, 백내장, 녹내장에 대해 병변 검출·분류·
-            중증도 추정과 진행 위험 예측까지 제공하는 임상 보조 솔루션입니다.
+            안저·전안부 영상을 기반으로 DR, 백내장, 녹내장에 대해 병변 검출·분류·중증도 추정과 진행 위험 예측까지 제공하는 임상 보조 솔루션입니다.
           </p>
         </div>
         <a href="Aeyes.html" class="section-link">
-          Aeyes 상세 페이지로 이동
+          Aeyes 상세 페이지
           <span class="arrow">↗</span>
         </a>
       </div>
@@ -1148,8 +1184,7 @@
           <div class="card-tag">DR · Diabetic Retinopathy</div>
           <h3 class="card-title">당뇨망막병증 조기 탐지</h3>
           <p class="card-desc">
-            다양한 망막 소견을 기반으로 DR 단계(No DR~PDR)를 등급화하고,
-            병변 히트맵을 함께 제공해 진단 및 설명가능성을 높입니다.
+            다양한 망막 소견을 기반으로 DR 단계(No DR~PDR)를 등급화하고, 병변 히트맵을 함께 제공해 진단 및 설명가능성을 높입니다.
           </p>
           <div class="card-meta">
             <span class="card-pill">DR Severity Score</span>
@@ -1161,8 +1196,7 @@
           <div class="card-tag">Cataract</div>
           <h3 class="card-title">백내장 혼탁도 정량화</h3>
           <p class="card-desc">
-            전안부 영상 기반으로 혼탁도를 정량화하고, 수술 권고 보조 지표를 산출해
-            수술 시점 의사결정을 돕습니다.
+            전안부 영상 기반으로 혼탁도를 정량화하고, 수술 권고 보조 지표를 산출해 수술 시점 의사결정을 돕습니다.
           </p>
           <div class="card-meta">
             <span class="card-pill">혼탁도 스코어</span>
@@ -1174,8 +1208,7 @@
           <div class="card-tag">Glaucoma</div>
           <h3 class="card-title">녹내장 진행 위험 추적</h3>
           <p class="card-desc">
-            RNFL/VD 등 핵심 지표를 추정하고 추세를 모니터링하여, 녹내장 진행 위험을
-            사전에 파악할 수 있도록 보조합니다.
+            RNFL/VD 등 핵심 지표를 추정하고 추세를 모니터링하여, 녹내장 진행 위험을 사전에 파악할 수 있도록 보조합니다.
           </p>
           <div class="card-meta">
             <span class="card-pill">지표 기반 위험 추정</span>
@@ -1191,8 +1224,7 @@
         <div>
           <h2 class="section-title">XAI Demo · DR 분류 모델 시각화</h2>
           <p class="section-subtitle">
-            실제 DR 분류 모델이 어떤 영역을 근거로 의사결정을 하는지,
-            Grad-CAM / XGrad-CAM 기반 히트맵으로 직관적으로 확인할 수 있습니다.
+            실제 DR 분류 모델이 어떤 영역을 근거로 의사결정을 하는지, Grad-CAM / XGrad-CAM 기반 히트맵으로 직관적으로 확인할 수 있습니다.
           </p>
         </div>
       </div>
@@ -1206,8 +1238,7 @@
             class="xai-image"
           />
           <p class="xai-caption">
-            각 행은 서로 다른 DR 단계(Moderate, Severe, Proliferative DR)에 해당하며,
-            원본 안저 영상(좌)과 Grad-CAM(중간), XGrad-CAM(우측)을 비교한 예시입니다.
+            각 행은 서로 다른 DR 단계(Moderate, Severe, Proliferative DR)에 해당하며, 원본 안저 영상(좌)과 Grad-CAM(중간), XGrad-CAM(우측)을 비교한 예시입니다.
           </p>
         </div>
 
@@ -1225,8 +1256,7 @@
           </ul>
 
           <p style="margin-top:12px;">
-            이러한 시각화는 모델 개발 단계의 검증뿐 아니라,
-            임상의가 결과를 빠르게 해석하고 환자에게 설명할 때에도 활용될 수 있습니다.
+            이러한 시각화는 모델 개발 단계의 검증뿐 아니라, 임상의가 결과를 빠르게 해석하고 환자에게 설명할 때에도 활용될 수 있습니다.
           </p>
         </div>
       </div>
@@ -1236,14 +1266,13 @@
     <section id="solutions" class="section">
       <div class="section-header">
         <div>
-          <h2 class="section-title">DR 중심 Medical AI 솔루션 하이라이트</h2>
+          <h2 class="section-title">Diabetic Retinopathy Solutions</h2>
           <p class="section-subtitle">
-            Henry AX 인프라 위에서 동작하는 Aeyes DR 파이프라인으로,
-            실제 안과/내분비 내원 환자 워크플로에 바로 붙일 수 있는 구성을 제공합니다.
+            Henry AX 인프라 위에서 동작하는 Aeyes DR 파이프라인으로, 실제 안과/내분비 내원 환자 워크플로에 바로 붙일 수 있는 구성을 제공합니다.
           </p>
         </div>
         <a href="HenryAX.html" class="section-link">
-          전체 솔루션 아키텍처 보기
+          솔루션 아키텍처
           <span class="arrow">↗</span>
         </a>
       </div>
@@ -1253,9 +1282,7 @@
           <div class="card-tag">01 · DR Screening</div>
           <h3 class="card-title">안저 기반 DR 분류 & 리스크 스코어링</h3>
           <p class="card-desc">
-            다양한 도메인의 안저 데이터셋으로 학습된 DR 분류 모델을 통해
-            No DR ~ Proliferative DR까지 단계별 위험도를 정량화합니다.
-            병원 환경에 맞게 Threshold 및 리포트 템플릿도 커스터마이징할 수 있습니다.
+            다양한 도메인의 안저 데이터셋으로 학습된 DR 분류 모델을 통해 No DR ~ Proliferative DR까지 단계별 위험도를 정량화합니다. 병원 환경에 맞게 Threshold 및 리포트 템플릿도 커스터마이징할 수 있습니다.
           </p>
           <div class="card-meta">
             <span class="card-pill">다기관 Testset 검증</span>
@@ -1267,8 +1294,7 @@
           <div class="card-tag">02 · MAE Backbone</div>
           <h3 class="card-title">자가지도 사전학습 기반 특성 학습</h3>
           <p class="card-desc">
-            MAE(자가지도) 기반 백본으로 다양한 안저·의료 영상 데이터에서 공통 특성을 학습하고,
-            각 병원의 데이터 분포에 맞춰 미세 조정을 수행합니다.
+            MAE(자가지도) 기반 백본으로 다양한 안저·의료 영상 데이터에서 공통 특성을 학습하고, 각 병원의 데이터 분포에 맞춰 미세 조정을 수행합니다.
           </p>
           <div class="card-meta">
             <span class="card-pill">사전학습 기반 표현학습</span>
@@ -1280,8 +1306,7 @@
           <div class="card-tag">03 · Explainability & Labeling</div>
           <h3 class="card-title">병변 강조 XAI & Pseudo Label 생성</h3>
           <p class="card-desc">
-            Grad-CAM, Score-CAM, Attention Rollout 등 다양한 시각화 기법으로 병변 위치를 강조하고,
-            이를 기반으로 반자동 Pseudo Label을 생성해 라벨링 코스트를 줄입니다.
+            Grad-CAM, Score-CAM, Attention Rollout 등 다양한 시각화 기법으로 병변 위치를 강조하고, 이를 기반으로 반자동 Pseudo Label을 생성해 라벨링 코스트를 줄입니다.
           </p>
           <div class="card-meta">
             <span class="card-pill">반자동 라벨링 파이프라인</span>
@@ -1295,10 +1320,9 @@
     <section id="workflow" class="section">
       <div class="section-header">
         <div>
-          <h2 class="section-title">도입 Workflow</h2>
+          <h2 class="section-title">Workflow</h2>
           <p class="section-subtitle">
-            실제 도입 시 병원 정보시스템(HIS/PACS)과 연동되는 흐름을
-            3단계로 단순화해 제공합니다. MVP 도입부터 연구용 PoC까지 확장 가능합니다.
+            실제 도입 시 병원 정보시스템(HIS/PACS)과 연동되는 흐름을 3단계로 단순화해 제공합니다. MVP 도입부터 연구용 PoC까지 확장 가능합니다.
           </p>
         </div>
       </div>
@@ -1308,24 +1332,21 @@
           <div class="step-index">Step 01</div>
           <div class="step-title">데이터 연동 & PoC 디자인</div>
           <p class="step-desc">
-            안저카메라·PACS와 연동하여 대상 코호트를 정의하고,
-            PoC 목표 지표(정확도, AUC, 리콜 등)를 합의합니다.
+            안저카메라·PACS와 연동하여 대상 코호트를 정의하고, PoC 목표 지표(정확도, AUC, 리콜 등)를 합의합니다.
           </p>
         </div>
         <div class="step">
           <div class="step-index">Step 02</div>
           <div class="step-title">모델 튜닝 & 배포 전략 설계</div>
           <p class="step-desc">
-            병원별 데이터 분포와 워크플로에 맞춰 모델 구조·하이퍼파라미터를 조정하고,
-            온프레미스/클라우드 등 배포 전략을 설계합니다.
+            병원별 데이터 분포와 워크플로에 맞춰 모델 구조·하이퍼파라미터를 조정하고, 온프레미스/클라우드 등 배포 전략을 설계합니다.
           </p>
         </div>
         <div class="step">
           <div class="step-index">Step 03</div>
           <div class="step-title">운영 환경 배포 & 모니터링</div>
           <p class="step-desc">
-            온프레미스 또는 클라우드 환경에 배포 후, 성능 드리프트·데이터 변화를
-            주기적으로 모니터링하며 지속적으로 재학습합니다.
+            온프레미스 또는 클라우드 환경에 배포 후, 성능 드리프트·데이터 변화를 주기적으로 모니터링하며 지속적으로 재학습합니다.
           </p>
         </div>
       </div>
@@ -1336,16 +1357,15 @@
       <div class="section-cta-text">
         <h2 class="section-cta-title">연구 협업 또는 PoC 도입이 궁금하시다면</h2>
         <p class="section-cta-desc">
-          국내 대학병원·연구실과 진행 중인 프로젝트 사례를 바탕으로,
-          귀 기관의 데이터·환경에 맞는 DR 진단·시각화 프레임워크를 함께 설계해 드립니다.
+          국내 대학병원·연구실과 진행 중인 프로젝트 사례를 바탕으로, 귀 기관의 데이터·환경에 맞는 DR 진단·시각화 프레임워크를 함께 설계해 드립니다.
         </p>
       </div>
       <div class="hero-ctas" style="margin-bottom:0;">
         <button class="btn-primary" onclick="location.href='mailto:contact@henryax.ai'">
-          도입/협업 미팅 잡기
+          도입 또는 협업 미팅 신청
         </button>
         <button class="btn-ghost" onclick="location.href='HenryAX.html#business'">
-          비즈니스/도입 모델 살펴보기
+          비즈니스, 도입 모델 살펴보기
         </button>
       </div>
     </section>
